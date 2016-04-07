@@ -1,149 +1,65 @@
-/*
-  This file is part of the PhantomJS project from Ofi Labs.
+/****************************************************************************
+**
+** Copyright (C) 2015 The Qt Company Ltd.
+** Contact: http://www.qt.io/licensing/
+**
+** This file is part of the demonstration applications of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:LGPL21$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see http://www.qt.io/terms-conditions. For further
+** information use the contact form at http://www.qt.io/contact-us.
+**
+** GNU Lesser General Public License Usage
+** Alternatively, this file may be used under the terms of the GNU Lesser
+** General Public License version 2.1 or version 3 as published by the Free
+** Software Foundation and appearing in the file LICENSE.LGPLv21 and
+** LICENSE.LGPLv3 included in the packaging of this file. Please review the
+** following information to ensure the GNU Lesser General Public License
+** requirements will be met: https://www.gnu.org/licenses/lgpl.html and
+** http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+**
+** As a special exception, The Qt Company gives you certain additional
+** rights. These rights are described in The Qt Company LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
 
-  Copyright (C) 2011 Ariya Hidayat <ariya.hidayat@gmail.com>
-  Copyright (C) 2011 Ivan De Marino <ivan.de.marino@gmail.com>
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the <organization> nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-  ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-/*
-   Copyright 2016 Wang Haomiao<et.tw@163.com>
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
- */
 #ifndef NETWORKACCESSMANAGER_H
 #define NETWORKACCESSMANAGER_H
 
 #include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QSslConfiguration>
-#include <QTimer>
-#include <QStringList>
-#include <QString>
-
-class QAuthenticator;
-class QNetworkDiskCache;
-class QSslConfiguration;
-
-class TimeoutTimer : public QTimer
-{
-    Q_OBJECT
-
-public:
-    TimeoutTimer(QObject* parent = 0);
-    QNetworkReply* reply;
-    QVariantMap data;
-};
-
-class JsNetworkRequest : public QObject
-{
-    Q_OBJECT
-
-public:
-    JsNetworkRequest(QNetworkRequest* request, QObject* parent = 0);
-    Q_INVOKABLE void abort();
-    Q_INVOKABLE void changeUrl(const QString& url);
-    Q_INVOKABLE bool setHeader(const QString& name, const QVariant& value);
-
-private:
-    QNetworkRequest* m_networkRequest;
-};
-
-class NoFileAccessReply : public QNetworkReply
-{
-    Q_OBJECT
-
-public:
-    NoFileAccessReply(QObject* parent, const QNetworkRequest& req, const QNetworkAccessManager::Operation op);
-    ~NoFileAccessReply();
-    void abort() {}
-protected:
-    qint64 readData(char*, qint64) { return -1; }
-};
+#include <QNetworkRequest>
 
 class NetworkAccessManager : public QNetworkAccessManager
 {
     Q_OBJECT
+
 public:
-    NetworkAccessManager(QObject* parent);
-    void setUserName(const QString& userName);
-    void setPassword(const QString& password);
-    void setMaxAuthAttempts(int maxAttempts);
-    void setResourceTimeout(int resourceTimeout);
-    void setCustomHeaders(const QVariantMap& headers);
-    QVariantMap customHeaders() const;
-    QStringList captureContent() const;
-    void setCaptureContent(const QStringList& patterns);
+    NetworkAccessManager(QObject *parent = 0);
 
-    void setCookieJar(QNetworkCookieJar* cookieJar);
-
-protected:
-    bool m_ignoreSslErrors;
-    bool m_localUrlAccessEnabled;
-    int m_authAttempts;
-    int m_maxAuthAttempts;
-    int m_resourceTimeout;
-    QString m_userName;
-    QString m_password;
-    QNetworkReply* createRequest(Operation op, const QNetworkRequest& req, QIODevice* outgoingData = 0);
-    void handleFinished(QNetworkReply* reply, const QVariant& status, const QVariant& statusText);
-
-signals:
-    void resourceRequested(const QVariant& data, QObject*);
-    void resourceReceived(const QVariant& data);
-    void resourceError(const QVariant& data);
-    void resourceTimeout(const QVariant& data);
-
-private slots:
-    void handleStarted();
-    void handleFinished(QNetworkReply* reply);
-    void provideAuthentication(QNetworkReply* reply, QAuthenticator* authenticator);
-    void handleSslErrors(const QList<QSslError>& errors);
-    void handleNetworkError();
-    void handleTimeout();
+    virtual QNetworkReply* createRequest ( Operation op, const QNetworkRequest & req, QIODevice * outgoingData = 0 );
 
 private:
-    void prepareSslConfiguration();
-    QVariantList getHeadersFromReply(const QNetworkReply* reply);
+    QList<QString> sslTrustedHostList;
+    qint64 requestFinishedCount;
+    qint64 requestFinishedFromCacheCount;
+    qint64 requestFinishedPipelinedCount;
+    qint64 requestFinishedSecureCount;
+    qint64 requestFinishedDownloadBufferCount;
 
-    QHash<QNetworkReply*, int> m_ids;
-    QSet<QNetworkReply*> m_started;
-    int m_idCounter;
-    QNetworkDiskCache* m_networkDiskCache;
-    QVariantMap m_customHeaders;
-    QSslConfiguration m_sslConfiguration;
-    QString m_sslCiphers;
+public slots:
+    void requestFinished(QNetworkReply *reply);
+
+#ifndef QT_NO_OPENSSL
+    void sslErrors(QNetworkReply *reply, const QList<QSslError> &error);
+#endif
 };
 
 #endif // NETWORKACCESSMANAGER_H
