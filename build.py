@@ -376,13 +376,15 @@ class SeimiAgentBuilder(object):
     def ensureSubmodulesAvailable(self):
         if self.options.skip_git: return
         try:
-            self.execute(["git", "clone", "https://github.com/zhegexiaohuozi/qtbase.git"], "src/qt")
-            self.execute(["git", "checkout", "phantomjs"], "src/qt/qtbase")
+            if not self.options.skip_qtbase:
+                self.execute(["git", "clone", "https://github.com/zhegexiaohuozi/qtbase.git"], "src/qt")
+                self.execute(["git", "checkout", "phantomjs"], "src/qt/qtbase")
         except Exception as e:
             pass
         try:
-            self.execute(["git", "clone", "https://github.com/zhegexiaohuozi/qtwebkit.git"], "src/qt")
-            self.execute(["git", "checkout", "phantomjs"], "src/qt/qtwebkit")
+            if not self.options.skip_qtwebkit:
+                self.execute(["git", "clone", "https://github.com/zhegexiaohuozi/qtwebkit.git"], "src/qt")
+                self.execute(["git", "checkout", "phantomjs"], "src/qt/qtwebkit")
         except Exception as x:
             pass
 
