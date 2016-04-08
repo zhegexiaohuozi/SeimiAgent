@@ -64,6 +64,7 @@ private:
      * @brief _postParamStr
      */
     QString _postParamStr;
+    QString _url;
 
 };
 

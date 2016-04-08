@@ -78,14 +78,16 @@ bool SeimiPage::isProxySet(){
 }
 
 void SeimiPage::processLog(int p){
-    qDebug()<<"[Seimi] TargetUrl:"<<_url<<" process:"<<p<<"%"
+    QTextStream out(stdout);
+    out<<QString("[Seimi] TargetUrl[%1] process:%2%").arg(_url).arg(p)<<endl;
 }
 
 void SeimiPage::toLoad(const QString &url,int renderTime){
     QTextStream out(stdout);
-
+    this->_url = url;
     this->_renderTime = renderTime;
     NetworkAccessManager *m_networkAccessManager = new NetworkAccessManager(this);
+    m_networkAccessManager->setCurrentUrl(url);
     if(isProxySet()){
         m_networkAccessManager->setProxy(_proxy);
     }

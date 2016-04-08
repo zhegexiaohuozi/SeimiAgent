@@ -26,8 +26,8 @@ class NetworkAccessManager : public QNetworkAccessManager
 
 public:
     NetworkAccessManager(QObject *parent = 0);
-
     virtual QNetworkReply* createRequest ( Operation op, const QNetworkRequest & req, QIODevice * outgoingData = 0 );
+    void setCurrentUrl(const QString &current);
 
 private:
     QList<QString> sslTrustedHostList;
@@ -36,6 +36,7 @@ private:
     qint64 requestFinishedPipelinedCount;
     qint64 requestFinishedSecureCount;
     qint64 requestFinishedDownloadBufferCount;
+    QString _currentMainTarget;
 
 public slots:
     void requestFinished(QNetworkReply *reply);
