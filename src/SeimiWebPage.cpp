@@ -78,8 +78,7 @@ bool SeimiPage::isProxySet(){
 }
 
 void SeimiPage::processLog(int p){
-    QTextStream out(stdout);
-    out << p <<endl;
+    qDebug()<<"[Seimi] TargetUrl:"<<_url<<" process:"<<p<<"%"
 }
 
 void SeimiPage::toLoad(const QString &url,int renderTime){

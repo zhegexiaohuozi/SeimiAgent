@@ -67,7 +67,7 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     QString postParamJson = connection->requestParamValue(postParamP);
     seimiPage->setScript(jscript);
     seimiPage->setPostParam(postParamJson);
-    out << "[seimi] targetUrl:" << url<< " renderTime(ms):"<< renderTime <<endl;
+    out << "[seimi] TargetUrl:" << url<< " ,RenderTime(ms):"<< renderTime <<endl;
     int useCookieFlag = connection->requestParamValue(useCookieP).toInt();
     seimiPage->setUseCookie(useCookieFlag==1);
     QObject::connect(seimiPage,SIGNAL(loadOver()),&eventLoop,SLOT(quit()));
