@@ -13,7 +13,7 @@ A headless,standalone webkit server which make grabing dynamic web page easier.
 cd /dir/of/seimiAgent
 ./SeimiAgent -p 8000
 ```
-SeimiAgent will startup and listen on the port that you set.Than you can use any http client tools post a load reqest to SeimiAgent and get back the content which just like chrome do.Http client tools you can use:
+SeimiAgent will start and listen on the port that you set.Than you can use any http client tools post a load reqest to SeimiAgent and get back the content which just like chrome do.Http client tools you can use:
 apache `httpclient` of java,`curl` of cmd,`httplib2` of python including, but not limited to.
 
 ## Http parameters that seimiAgent support ##
