@@ -1,9 +1,12 @@
 # SeimiAgent #
 A headless,standalone webkit server which make grabing dynamic web page easier.
 
+[中文文档](https://github.com/zhegexiaohuozi/SeimiAgent/blob/master/zh.md)
+
 # DownLoad #
-[Centos6 x64](http://seimidl.wanghaomiao.cn/seimiagent_for_centos6_x64_v1.0.tar.gz)
-[ubuntu x64](http://seimidl.wanghaomiao.cn/seimiagent_for_ubuntu_x64_v1.0.tar.gz)
+- [Centos6 x64](http://seimidl.wanghaomiao.cn/seimiagent_for_centos6_x64_v1.0.tar.gz)
+
+- [ubuntu x64](http://seimidl.wanghaomiao.cn/seimiagent_for_ubuntu_x64_v1.0.tar.gz)
 
 # Quick Start #
 ```
@@ -14,6 +17,7 @@ SeimiAgent will startup and listen on the port that you set.Than you can use any
 apache `httpclient` of java,`curl` of cmd,`httplib2` of python including, but not limited to.
 
 ## Http parameters that seimiAgent support ##
+Only support post.
 - `url`
 your target url
 
@@ -28,6 +32,25 @@ Json string only,tell seimiAgent you want to use http post method and pass the p
 
 - `useCookie`
 If `useCookie`==1,seimiAgent deem you want to use cookie.Default 0.
+
+# How to build #
+It will take a very long time to build,so it is recommended to use the premade binary file in 'Download'.
+
+##Requirements##
+- on ubuntu
+```
+sudo apt-get install build-essential g++ flex bison gperf ruby perl libsqlite3-dev libfontconfig1-dev libicu-dev libfreetype6 libssl-dev libpng-dev libjpeg-dev python libx11-dev libxext-dev
+```
+
+- on centos
+```
+yum -y install gcc gcc-c++ make flex bison gperf ruby openssl-devel freetype-devel fontconfig-devel libicu-devel sqlite-devel libpng-devel libjpeg-devel
+```
+## Build ##
+```
+python build.py
+```
+Then wait or take a cup of tea.
 
 # More #
 More Doc is on his way...
