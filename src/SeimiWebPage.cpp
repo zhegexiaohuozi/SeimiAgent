@@ -39,18 +39,16 @@ SeimiPage::SeimiPage(QObject *parent) : QObject(parent)
 }
 
 void SeimiPage::loadAllFinished(bool){
-    QTextStream out(stdout);
-    out << "[Seimi]LoadAllFinished" <<endl;
+    qInfo("[Seimi] All load finished.");
     QTimer::singleShot(_renderTime,this,SLOT(renderFinalHtml()));
 }
 
 void SeimiPage::renderFinalHtml(){
-    QTextStream out(stdout);
     if(!_script.isEmpty()){
         QVariant res = _sWebPage->mainFrame()->evaluateJavaScript(_script);
-        out << "[Seimi]EvaluateJavaScript done."<<res.toString()<<",js="<< _script <<endl;
+        qInfo("[Seimi] EvaluateJavaScript done. result=%s , js=%s",res.toString().toUtf8().constData(),_script.toUtf8().constData());
     }
-    out << "[Seimi]Render out over" <<endl;
+    qInfo("[Seimi] Document render out over.");
     _content = _sWebPage->mainFrame()->toHtml();
     _isContentSet = true;
     emit loadOver();
@@ -78,12 +76,10 @@ bool SeimiPage::isProxySet(){
 }
 
 void SeimiPage::processLog(int p){
-    QTextStream out(stdout);
-    out<<QString("[Seimi] TargetUrl[%1] process:%2%").arg(_url).arg(p)<<endl;
+    qInfo("[Seimi] TargetUrl[%s] process:%d%",_url.toUtf8().constData(),p);
 }
 
 void SeimiPage::toLoad(const QString &url,int renderTime){
-    QTextStream out(stdout);
     this->_url = url;
     this->_renderTime = renderTime;
     NetworkAccessManager *m_networkAccessManager = new NetworkAccessManager(this);
@@ -109,8 +105,7 @@ void SeimiPage::toLoad(const QString &url,int renderTime){
             _sWebPage->mainFrame()->load(QNetworkRequest(QUrl(url)),QNetworkAccessManager::PostOperation,targetParams);
 
         }else{
-            out << "[Seimi] postParam is invalid" <<endl;
-
+            qWarning("[Seimi] postParam is invalid");
         }
     }
 

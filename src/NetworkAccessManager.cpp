@@ -71,14 +71,8 @@ void NetworkAccessManager::requestFinished(QNetworkReply *reply)
     double pctPipelined = (double(requestFinishedPipelinedCount) * 100.0/ double(requestFinishedCount));
     double pctSecure = (double(requestFinishedSecureCount) * 100.0/ double(requestFinishedCount));
     double pctDownloadBuffer = (double(requestFinishedDownloadBufferCount) * 100.0/ double(requestFinishedCount));
-//    qDebug()<<""<<QString("[Seimi] TargeUrl[%1] STATS [%2 requests total] [%3% from cache] [%4% pipelined] [%5% SSL/TLS] [%6% Zerocopy]")
-//              .arg(_currentMainTarget)
-//              .arg(requestFinishedCount)
-//              .arg(pctCached)
-//              .arg(pctPipelined)
-//              .arg(pctSecure)
-//              .arg(pctDownloadBuffer);
-    qInfo("[Seimi] TargeUrl[%s] STATS [%lli requests total] [%3.2f%% from cache] [%3.2f%% pipelined] [%3.2f%% SSL/TLS] [%3.2f%% Zerocopy]",reply->url().toString(), requestFinishedCount, pctCached, pctPipelined, pctSecure, pctDownloadBuffer);
+    //http://stackoverflow.com/a/27479099/3035247
+    qInfo("[Seimi] TargetUrl[%s] STATS [%lli requests total] [%3.2f%% from cache] [%3.2f%% pipelined] [%3.2f%% SSL/TLS] [%3.2f%% Zerocopy]",_currentMainTarget.toUtf8().constData(), requestFinishedCount, pctCached, pctPipelined, pctSecure, pctDownloadBuffer);
 }
 
 #ifndef QT_NO_OPENSSL

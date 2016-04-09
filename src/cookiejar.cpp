@@ -84,7 +84,7 @@ QDataStream& operator>>(QDataStream& stream, QList<QNetworkCookie>& list)
         stream >> value;
         QList<QNetworkCookie> newCookies = QNetworkCookie::parseCookies(value);
         if (newCookies.count() == 0 && value.length() != 0) {
-            qWarning() << "CookieJar: Unable to parse saved cookie:" << value;
+            qWarning() << "[seimi] Cookie: Unable to parse saved cookie:" << value;
         }
         for (int j = 0; j < newCookies.count(); ++j) {
             list.append(newCookies.at(j));
@@ -112,7 +112,7 @@ CookieJar::CookieJar(QObject* parent)
     }
     m_cookieStorage = new QSettings(directory + QLatin1String("/cookies.ini"), QSettings::IniFormat, this);
     load();
-    qDebug() << "CookieJar - Created and will store cookies in:" << directory;
+    qDebug() << "[seimi] Cookie - Created and will store cookies in:" << directory;
 }
 
 // private:
@@ -160,7 +160,7 @@ bool CookieJar::addCookie(const QNetworkCookie& cookie, const QString& url)
         if (contains(cookie)) {
             return true;
         }
-        qDebug() << "CookieJar - Rejected Cookie" << cookie.toRawForm();
+        qDebug() << "[seimi] CookieJar - Rejected Cookie" << cookie.toRawForm();
         return false;
     }
     return false;
@@ -475,7 +475,7 @@ void CookieJar::save()
 
 #ifndef QT_NO_DEBUG_OUTPUT
         foreach(QNetworkCookie cookie, allCookies()) {
-            qDebug() << "CookieJar - Saved" << cookie.toRawForm();
+            qDebug() << "[seimi] Cookie - Saved" << cookie.toRawForm();
         }
 #endif
 
@@ -504,7 +504,7 @@ void CookieJar::load()
 
 #ifndef QT_NO_DEBUG_OUTPUT
         foreach(QNetworkCookie cookie, allCookies()) {
-            qDebug() << "CookieJar - Loaded" << cookie.toRawForm();
+            qDebug() << "[seimi] Cookie - Loaded" << cookie.toRawForm();
         }
 #endif
     }

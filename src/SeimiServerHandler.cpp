@@ -14,7 +14,6 @@
    limitations under the License.
  */
 #include <QObject>
-#include <QTextStream>
 #include <QEventLoop>
 #include <QNetworkProxy>
 #include <QRegularExpression>
@@ -39,7 +38,6 @@ SeimiServerHandler::SeimiServerHandler(QObject *parent):Pillow::HttpHandler(pare
 bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     QEventLoop eventLoop;
     SeimiPage *seimiPage=new SeimiPage(this);
-    QTextStream out(stdout);
     QString url = connection->requestParamValue(urlP);
     int renderTime = connection->requestParamValue(renderTimeP).toInt();
     QString proxyStr = connection->requestParamValue(proxyP);
@@ -60,14 +58,14 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
 
             seimiPage->setProxy(proxy);
         }else {
-            out<< "[SEIMI] proxy pattern error, proxy = "<< proxyStr << endl;
+            qWarning("[SEIMI] proxy pattern error, proxy = %s",proxyStr.toUtf8().constData());
         }
     }
     QString jscript = connection->requestParamValue(scriptP);
     QString postParamJson = connection->requestParamValue(postParamP);
     seimiPage->setScript(jscript);
     seimiPage->setPostParam(postParamJson);
-    out << "[seimi] TargetUrl:" << url<< " ,RenderTime(ms):"<< renderTime <<endl;
+    qInfo("[seimi] TargetUrl:%s ,RenderTime(ms):%d",url.toUtf8().constData(),renderTime);
     int useCookieFlag = connection->requestParamValue(useCookieP).toInt();
     seimiPage->setUseCookie(useCookieFlag==1);
     QObject::connect(seimiPage,SIGNAL(loadOver()),&eventLoop,SLOT(quit()));
