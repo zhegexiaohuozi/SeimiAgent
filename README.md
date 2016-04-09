@@ -4,9 +4,9 @@ A headless,standalone webkit server which make grabing dynamic web page easier.
 [中文文档](https://github.com/zhegexiaohuozi/SeimiAgent/blob/master/zh.md)
 
 # DownLoad #
-- [Centos6 x64](http://seimidl.wanghaomiao.cn/seimiagent_for_centos6_x64_v1.0.tar.gz)
+- [Centos6 x64](http://seimidl.wanghaomiao.cn/seimiagent_centos6_x64_v1.0.tar.gz)
 
-- [ubuntu x64](http://seimidl.wanghaomiao.cn/seimiagent_for_ubuntu_x64_v1.0.tar.gz)
+- [ubuntu x64](http://seimidl.wanghaomiao.cn/seimiagent_ubuntu_x64_v1.0.tar.gz)
 
 # Quick Start #
 ```
