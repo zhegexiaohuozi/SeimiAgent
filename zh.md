@@ -16,7 +16,7 @@ cd /dir/of/seimiAgent
 执行命令后，SeimiAgent会起一个http服务并监听你所指定的端口，如例子中的8000端口，然后你就可以通过任何一种你熟悉的语言像SeimiAgent发送一个页面的加载渲染请求，并得到SeimiAgent渲染好的HTML文档进行后续处理。
 
 ## 支持的http参数 ##
-仅支持post请求
+仅支持post请求,请求地址`/doload`
 - `url`
 目标请求地址，必填项
 

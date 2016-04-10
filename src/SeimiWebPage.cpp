@@ -76,7 +76,7 @@ bool SeimiPage::isProxySet(){
 }
 
 void SeimiPage::processLog(int p){
-    qInfo("[Seimi] TargetUrl[%s] process:%d%",_url.toUtf8().constData(),p);
+    qInfo("[seimi] TargetUrl[%s] process:%d%",_url.toUtf8().constData(),p);
 }
 
 void SeimiPage::toLoad(const QString &url,int renderTime){
@@ -105,7 +105,7 @@ void SeimiPage::toLoad(const QString &url,int renderTime){
             _sWebPage->mainFrame()->load(QNetworkRequest(QUrl(url)),QNetworkAccessManager::PostOperation,targetParams);
 
         }else{
-            qWarning("[Seimi] postParam is invalid");
+            qWarning("[seimi] postParam is invalid");
         }
     }
 

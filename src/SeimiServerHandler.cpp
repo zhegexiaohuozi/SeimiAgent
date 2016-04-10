@@ -36,6 +36,16 @@ SeimiServerHandler::SeimiServerHandler(QObject *parent):Pillow::HttpHandler(pare
 }
 
 bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
+    QString method = connection->requestMethod();
+    QString path = connection->requestPath();
+    qDebug()<<"method == "<<method<<" path:"<<path;
+    if(method == "GET"){
+        connection->writeResponse(405, Pillow::HttpHeaderCollection(),"Method 'GET' is not supprot,please use 'POST'");
+        return true;
+    }
+    if(path != "/doload"){
+        return false;
+    }
     QEventLoop eventLoop;
     SeimiPage *seimiPage=new SeimiPage(this);
     QString url = connection->requestParamValue(urlP);
@@ -58,7 +68,7 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
 
             seimiPage->setProxy(proxy);
         }else {
-            qWarning("[SEIMI] proxy pattern error, proxy = %s",proxyStr.toUtf8().constData());
+            qWarning("[seimi] proxy pattern error, proxy = %s",proxyStr.toUtf8().constData());
         }
     }
     QString jscript = connection->requestParamValue(scriptP);

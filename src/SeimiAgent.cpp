@@ -15,8 +15,6 @@
  */
 #include <QApplication>
 #include <QCommandLineParser>
-#include <QTextStream>
-
 #include "pillowcore/HttpServer.h"
 #include "pillowcore/HttpHandler.h"
 #include "pillowcore/HttpConnection.h"
@@ -49,7 +47,7 @@ void SeimiAgent::cleanAllcookies(){
 int SeimiAgent::run(int argc, char *argv[]){
     QApplication a(argc, argv);
     a.setApplicationVersion("1.0.0");
-    a.setApplicationName("SeimiAgent,in order to crawl dynamic pages");
+    a.setApplicationName("SeimiAgent,a headless,standalone webkit server which make grabing dynamic web page easier.");
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
@@ -63,10 +61,11 @@ int SeimiAgent::run(int argc, char *argv[]){
     Pillow::HttpServer server(QHostAddress("0.0.0.0"), portN);
     if (!server.isListening())
         exit(1);
-    qDebug() << "SeimiAgent started,listening on :"<<portN;
+    qInfo() << "[seimi] SeimiAgent started,listening on :"<<portN;
     Pillow::HttpHandler* handler = new Pillow::HttpHandlerStack(&server);
         new Pillow::HttpHandlerLog(handler);
         new SeimiServerHandler(handler);
+        new Pillow::HttpHandler404(handler);
     QObject::connect(&server, SIGNAL(requestReady(Pillow::HttpConnection*)), handler, SLOT(handleRequest(Pillow::HttpConnection*)));
     return a.exec();
 }

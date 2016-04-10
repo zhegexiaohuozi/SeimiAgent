@@ -17,7 +17,7 @@ SeimiAgent will start and listen on the port that you set.Than you can use any h
 apache `httpclient` of java,`curl` of cmd,`httplib2` of python including, but not limited to.
 
 ## Http parameters that seimiAgent support ##
-Only support post.
+Only support post.Request path:`/doload`
 - `url`
 your target url
 

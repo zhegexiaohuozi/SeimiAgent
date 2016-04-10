@@ -72,7 +72,7 @@ void NetworkAccessManager::requestFinished(QNetworkReply *reply)
     double pctSecure = (double(requestFinishedSecureCount) * 100.0/ double(requestFinishedCount));
     double pctDownloadBuffer = (double(requestFinishedDownloadBufferCount) * 100.0/ double(requestFinishedCount));
     //http://stackoverflow.com/a/27479099/3035247
-    qInfo("[Seimi] TargetUrl[%s] STATS [%lli requests total] [%3.2f%% from cache] [%3.2f%% pipelined] [%3.2f%% SSL/TLS] [%3.2f%% Zerocopy]",_currentMainTarget.toUtf8().constData(), requestFinishedCount, pctCached, pctPipelined, pctSecure, pctDownloadBuffer);
+    qInfo("[seimi] TargetUrl[%s] STATS [%lli requests total] [%3.2f%% from cache] [%3.2f%% pipelined] [%3.2f%% SSL/TLS] [%3.2f%% Zerocopy]",_currentMainTarget.toUtf8().constData(), requestFinishedCount, pctCached, pctPipelined, pctSecure, pctDownloadBuffer);
 }
 
 #ifndef QT_NO_OPENSSL
