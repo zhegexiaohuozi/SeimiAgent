@@ -382,12 +382,26 @@ class SeimiAgentBuilder(object):
         except Exception as x:
             pass
 
+    def package(self):
+        binDir = os.path.abspath("bin")
+        if os.path.exists(binDir):
+            self.execute(["mkdir","seimiagent"],"./")
+            self.execute(["cp","-rf","bin","*.md","seimiagent"],"./")
+            self.execute(["tar","czvf","seimiagent","seimiagent_%s.tar.gz"%self.options.package],"./")
+            self.execute(["rm","-rf","seimiagent"],"./")
+        else:
+            print("SeimiAgent not build.")
+
     # run all build steps required to get a final SeimiAgent binary at the end
     def run(self):
-        self.ensureSubmodulesAvailable();
-        self.buildQtBase()
-        self.buildQtWebKit()
-        self.buildSeimiAgent()
+        if self.options.package:
+            self.package()
+        else:
+            self.ensureSubmodulesAvailable()
+            self.buildQtBase()
+            self.buildQtWebKit()
+            self.buildSeimiAgent()
+
 
 
 # parse command line arguments and return the result
@@ -403,6 +417,7 @@ def parseArguments():
                         help="Silently confirm the build.")
     parser.add_argument("-n", "--dry-run", action="store_true",
                         help="Only print what would be done without actually executing anything.")
+    parser.add_argument("-p","--package",type=str,help="final package name suffix")
 
     # NOTE: silent build does not exist on windows apparently
     if platform.system() != "Windows":
