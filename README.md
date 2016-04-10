@@ -22,7 +22,7 @@ Only support post.Request path:`/doload`
 your target url
 
 - `renderTime`
-How long time you hope to give seimiAgent to process javascript action and document after load finashed.
+How long time you hope to give seimiAgent to process javascript action and document after load finashed.Milliseconds.
 
 - `proxy`
 Tell SeimiAgent to use proxy.Pattern:`http|https|socket://user:passwd@host:port`

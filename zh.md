@@ -21,7 +21,7 @@ cd /dir/of/seimiAgent
 目标请求地址，必填项
 
 - `renderTime`
-在所有资源都加载好了以后留给SeimiAgent去渲染处理的时间，如果是很复杂的动态页面这个时间可能就需要长一些，具体根据使用情况进行调整。非必填
+在所有资源都加载好了以后留给SeimiAgent去渲染处理的时间，如果是很复杂的动态页面这个时间可能就需要长一些，具体根据使用情况进行调整。非必填,单位为毫秒
 
 - `proxy`
 告诉SeimiAgent使用什么代理，非必填，格式:`http|https|socket://user:passwd@host:port`
