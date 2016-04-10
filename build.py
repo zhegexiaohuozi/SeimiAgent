@@ -481,7 +481,7 @@ Building SeimiAgent from source takes a very long time, anywhere from 30 minutes
 to several hours (depending on the machine configuration). It is recommended to
 use the premade binary packages on supported operating systems.
 
-For details, please go the the web site: http://seimi.wanghaomiao.cn/seimiagent.
+For details, please go the the web site: http://seimi.wanghaomiao.cn/seimiagent.html
 """)
             while True:
                 sys.stdout.write("Do you want to continue (Y/n)? ")
