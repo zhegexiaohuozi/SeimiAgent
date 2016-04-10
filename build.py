@@ -386,8 +386,8 @@ class SeimiAgentBuilder(object):
         binDir = os.path.abspath("bin")
         if os.path.exists(binDir):
             self.execute(["mkdir","seimiagent"],"./")
-            self.execute(["cp","-rf","bin","*.md","seimiagent"],"./")
-            self.execute(["tar","czvf","seimiagent","seimiagent_%s.tar.gz"%self.options.package],"./")
+            self.execute(["cp","-rf","bin","zh.md","README.md","LICENSE.md","seimiagent"],"./")
+            self.execute(["tar","czvf","seimiagent_%s.tar.gz"%self.options.package,"seimiagent"],"./")
             self.execute(["rm","-rf","seimiagent"],"./")
         else:
             print("SeimiAgent not build.")
