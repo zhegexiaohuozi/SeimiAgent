@@ -50,9 +50,9 @@ import subprocess
 import re
 import multiprocessing
 
-root = os.path.abspath(os.path.dirname(__file__))
-third_party_names = ["libicu", "libxml", "openssl", "zlib"]
-third_party_path = os.path.join(root, "src", "qt", "3rdparty")
+# root = os.path.abspath(os.path.dirname(__file__))
+# third_party_names = ["libicu", "libxml", "openssl", "zlib"]
+# third_party_path = os.path.join(root, "src", "qt", "3rdparty")
 
 openssl_search_paths = [{
     "name": "Brew",
@@ -184,18 +184,19 @@ class SeimiAgentBuilder(object):
     def platformQtConfigureOptions(self):
         platformOptions = []
         if platform.system() == "Windows":
-            platformOptions = [
-                "-mp",
-                "-static-runtime",
-                "-no-cetest",
-                "-no-angle",
-                "-icu",
-                "-openssl",
-                "-openssl-linked",
-            ]
-            deps = findThirdPartyDeps()
-            platformOptions.extend(deps[0])
-            platformOptions.extend(deps[1])
+            raise Exception("windows is not supported by this script now.")
+            # platformOptions = [
+            #     "-mp",
+            #     "-static-runtime",
+            #     "-no-cetest",
+            #     "-no-angle",
+            #     "-icu",
+            #     "-openssl",
+            #     "-openssl-linked",
+            # ]
+            # deps = findThirdPartyDeps()
+            # platformOptions.extend(deps[0])
+            # platformOptions.extend(deps[1])
         else:
             # Unix platform options
             platformOptions = [
@@ -394,6 +395,8 @@ class SeimiAgentBuilder(object):
 
     # run all build steps required to get a final SeimiAgent binary at the end
     def run(self):
+        if platform.system() == "Windows":
+            raise RuntimeError("Windows is not supported by this script now.")
         if self.options.package:
             self.package()
         else:
