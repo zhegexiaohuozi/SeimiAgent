@@ -8,6 +8,8 @@ A headless,standalone webkit server which make grabing dynamic web page easier.
 
 - [ubuntu x64](http://seimidl.wanghaomiao.cn/seimiagent_ubuntu_v1.0_x86_64.tar.gz)
 
+- [window7 x64 Just having a look](http://seimidl.wanghaomiao.cn/seimiagent_windows_x86_64_v1.0.zip)
+
 # Quick Start #
 ```
 cd /dir/of/seimiAgent

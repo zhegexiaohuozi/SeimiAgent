@@ -8,6 +8,8 @@ SeimiAgent是基于QtWebkit开发的可在服务器端后台运行的一个webki
 
 - [ubuntu x64](http://seimidl.wanghaomiao.cn/seimiagent_ubuntu_v1.0_x86_64.tar.gz)
 
+- [window7 x64体验包](http://seimidl.wanghaomiao.cn/seimiagent_windows_x86_64_v1.0.zip)
+
 # 快速开始 #
 ```
 cd /dir/of/seimiAgent
