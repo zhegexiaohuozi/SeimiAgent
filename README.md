@@ -18,7 +18,7 @@ cd /dir/of/seimiAgent
 SeimiAgent will start and listen on the port that you set.Than you can use any http client tools post a load reqest to SeimiAgent and get back the content which just like chrome do.Http client tools you can use:
 apache `httpclient` of java,`curl` of cmd,`httplib2` of python including, but not limited to.
 
-## demo ##
+## Demo show ##
 ![demo](http://77g8ty.com1.z0.glb.clouddn.com/seimiagentdemo.gif)
 
 ## Http parameters that seimiAgent support ##
