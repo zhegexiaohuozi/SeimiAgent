@@ -38,7 +38,6 @@ SeimiServerHandler::SeimiServerHandler(QObject *parent):Pillow::HttpHandler(pare
 bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     QString method = connection->requestMethod();
     QString path = connection->requestPath();
-    qDebug()<<"method == "<<method<<" path:"<<path;
     if(method == "GET"){
         connection->writeResponse(405, Pillow::HttpHeaderCollection(),"Method 'GET' is not supprot,please use 'POST'");
         return true;
@@ -81,7 +80,9 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     QObject::connect(seimiPage,SIGNAL(loadOver()),&eventLoop,SLOT(quit()));
     seimiPage->toLoad(url,renderTime);
     eventLoop.exec();
-    connection->writeResponse(200, Pillow::HttpHeaderCollection(),seimiPage->getContent().toUtf8());
+    Pillow::HttpHeaderCollection headers;
+    headers << Pillow::HttpHeader("Content-Type", "text/html;charset=utf-8");
+    connection->writeResponse(200, headers,seimiPage->getContent().toUtf8());
     seimiPage->deleteLater();
     return true;
 }

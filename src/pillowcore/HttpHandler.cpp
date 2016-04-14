@@ -304,7 +304,7 @@ bool HttpHandlerFile::handleRequest(Pillow::HttpConnection *connection)
 	else
 	{
 		HttpHeaderCollection headers; headers.reserve(2);
-		headers << HttpHeader("Content-Type", HttpMimeHelper::getMimeTypeForFilename(requestPath));
+        headers << HttpHeader("Content-Type", HttpMimeHelper::getMimeTypeForFilename(requestPath));
 
 		if (file->size() <= bufferSize())
 		{
