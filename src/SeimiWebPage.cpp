@@ -118,3 +118,11 @@ void SeimiPage::setUseCookie(bool useCoookie){
 void SeimiPage::setPostParam(QString &jsonStr){
     _postParamStr = jsonStr;
 }
+
+QImage SeimiPage::generateImg(){
+    //todo
+}
+
+QFile SeimiPage::generatePdf(){
+    //todo
+}

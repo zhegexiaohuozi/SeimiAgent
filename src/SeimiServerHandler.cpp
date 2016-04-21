@@ -30,7 +30,9 @@ SeimiServerHandler::SeimiServerHandler(QObject *parent):Pillow::HttpHandler(pare
     proxyP("proxy"),
     scriptP("script"),
     useCookieP("useCookie"),
-    postParamP("postParam")
+    postParamP("postParam"),
+    contentTypeP("contentType"),
+    outSizeP("outSize")
 {
 
 }
@@ -50,6 +52,7 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     QString url = connection->requestParamValue(urlP);
     int renderTime = connection->requestParamValue(renderTimeP).toInt();
     QString proxyStr = connection->requestParamValue(proxyP);
+    QString contentType = connection->requestParamValue(contentTypeP);
     if(!proxyStr.isEmpty()){
         QRegularExpression re("(?<protocol>http|https|socket)://(?:(?<user>\\w*):(?<password>\\w*)@)?(?<host>[\\w.]+)(:(?<port>\\d+))?");
         QRegularExpressionMatch match = re.match(proxyStr);
@@ -81,8 +84,14 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     seimiPage->toLoad(url,renderTime);
     eventLoop.exec();
     Pillow::HttpHeaderCollection headers;
-    headers << Pillow::HttpHeader("Content-Type", "text/html;charset=utf-8");
-    connection->writeResponse(200, headers,seimiPage->getContent().toUtf8());
+    if(contentType == "pdf"){
+        headers << HttpHeader("Content-Type", "application/octet-stream");
+    }else if(contentType == "img"){
+        headers << HttpHeader("Content-Type", "image/png");
+    }else{
+        headers << Pillow::HttpHeader("Content-Type", "text/html;charset=utf-8");
+        connection->writeResponse(200, headers,seimiPage->getContent().toUtf8());
+    }
     seimiPage->deleteLater();
     return true;
 }

@@ -21,6 +21,7 @@
 #include <QVariantMap>
 #include <QThread>
 #include <QNetworkProxy>
+#include <QFile>
 #include <QtWebKitWidgets/QWebPage>
 #include <QtWebKitWidgets/QWebFrame>
 #include "cookiejar.h"
@@ -49,6 +50,8 @@ public:
     void setScript(QString &script);
     void setUseCookie(bool useCoookie);
     void setPostParam(QString &jsonStr);
+    QImage generateImg();
+    QFile generatePdf();
 private:
     QWebFrame *_sWebFrame;
     QWebPage *_sWebPage;

@@ -31,6 +31,8 @@ private:
     QString scriptP;
     QString useCookieP;
     QString postParamP;
+    QString contentTypeP;
+    QString outSizeP;
 };
 
 #endif // SEIMISERVERHANDLER_H
