@@ -32,7 +32,7 @@ private:
     QString useCookieP;
     QString postParamP;
     QString contentTypeP;
-    QString outSizeP;
+    QString outImgSizeP;
 };
 
 #endif // SEIMISERVERHANDLER_H

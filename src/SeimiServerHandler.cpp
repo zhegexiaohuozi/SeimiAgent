@@ -18,6 +18,7 @@
 #include <QNetworkProxy>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QBuffer>
 #include "SeimiServerHandler.h"
 #include "SeimiWebPage.h"
 #include "pillowcore/HttpServer.h"
@@ -32,7 +33,7 @@ SeimiServerHandler::SeimiServerHandler(QObject *parent):Pillow::HttpHandler(pare
     useCookieP("useCookie"),
     postParamP("postParam"),
     contentTypeP("contentType"),
-    outSizeP("outSize")
+    outImgSizeP("outImgSize")
 {
 
 }
@@ -53,26 +54,28 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     int renderTime = connection->requestParamValue(renderTimeP).toInt();
     QString proxyStr = connection->requestParamValue(proxyP);
     QString contentType = connection->requestParamValue(contentTypeP);
+    QString outImgSizeStr = connection->requestParamValue(outImgSizeP);
     if(!proxyStr.isEmpty()){
-        QRegularExpression re("(?<protocol>http|https|socket)://(?:(?<user>\\w*):(?<password>\\w*)@)?(?<host>[\\w.]+)(:(?<port>\\d+))?");
-        QRegularExpressionMatch match = re.match(proxyStr);
-        if(match.hasMatch()){
+        QRegularExpression reProxy("(?<protocol>http|https|socket)://(?:(?<user>\\w*):(?<password>\\w*)@)?(?<host>[\\w.]+)(:(?<port>\\d+))?");
+        QRegularExpressionMatch matchProxy = reProxy.match(proxyStr);
+        if(matchProxy.hasMatch()){
             QNetworkProxy proxy;
-            if(match.captured("protocol") == "socket"){
+            if(matchProxy.captured("protocol") == "socket"){
                 proxy.setType(QNetworkProxy::Socks5Proxy);
             }else{
                 proxy.setType(QNetworkProxy::HttpProxy);
             }
-            proxy.setHostName(match.captured("host"));
-            proxy.setPort(match.captured("port").toInt()==0?80:match.captured("port").toInt());
-            proxy.setUser(match.captured("user"));
-            proxy.setPassword(match.captured("password"));
+            proxy.setHostName(matchProxy.captured("host"));
+            proxy.setPort(matchProxy.captured("port").toInt()==0?80:matchProxy.captured("port").toInt());
+            proxy.setUser(matchProxy.captured("user"));
+            proxy.setPassword(matchProxy.captured("password"));
 
             seimiPage->setProxy(proxy);
         }else {
             qWarning("[seimi] proxy pattern error, proxy = %s",proxyStr.toUtf8().constData());
         }
     }
+
     QString jscript = connection->requestParamValue(scriptP);
     QString postParamJson = connection->requestParamValue(postParamP);
     seimiPage->setScript(jscript);
@@ -85,9 +88,24 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     eventLoop.exec();
     Pillow::HttpHeaderCollection headers;
     if(contentType == "pdf"){
-        headers << HttpHeader("Content-Type", "application/octet-stream");
+        headers << Pillow::HttpHeader("Content-Type", "application/octet-stream");
     }else if(contentType == "img"){
-        headers << HttpHeader("Content-Type", "image/png");
+        headers << Pillow::HttpHeader("Content-Type", "image/png");
+        QSize targetSize;
+        if(!outImgSizeStr.isEmpty()){
+            QRegularExpression reImgSize("(?<xSize>\\d+)(?:x|X)(?<ySize>\\d+)");
+            QRegularExpressionMatch matchImgSize = reImgSize.match(outImgSizeStr);
+            if(matchImgSize.hasMatch()){
+                targetSize.setWidth(matchImgSize.captured("xSize").toInt());
+                targetSize.setHeight(matchImgSize.captured("ySize").toInt());
+            }
+        }
+        QImage imgContent = seimiPage->generateImg(targetSize);
+        QByteArray out;
+        QBuffer buffer(&out);
+        buffer.open(QIODevice::WriteOnly);
+        imgContent.save(&buffer,"png",-1);
+        connection->writeResponse(200,headers,out);
     }else{
         headers << Pillow::HttpHeader("Content-Type", "text/html;charset=utf-8");
         connection->writeResponse(200, headers,seimiPage->getContent().toUtf8());

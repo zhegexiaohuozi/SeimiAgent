@@ -50,7 +50,7 @@ public:
     void setScript(QString &script);
     void setUseCookie(bool useCoookie);
     void setPostParam(QString &jsonStr);
-    QImage generateImg();
+    QImage generateImg(QSize &targetSize);
     QFile generatePdf();
 private:
     QWebFrame *_sWebFrame;

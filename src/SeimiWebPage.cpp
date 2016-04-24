@@ -23,6 +23,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkRequest>
+#include <QPainter>
 #include "NetworkAccessManager.h"
 #include "SeimiAgent.h"
 
@@ -119,10 +120,49 @@ void SeimiPage::setPostParam(QString &jsonStr){
     _postParamStr = jsonStr;
 }
 
-QImage SeimiPage::generateImg(){
-    //todo
+QImage SeimiPage::generateImg(QSize &targetSize){
+    if(targetSize.isNull()||targetSize.width()==0||targetSize.height()==0){
+        targetSize = _sWebPage->viewportSize();
+    }
+    QRect tRect = QRect(QPoint(0, 0), targetSize);
+    QSize oriViewportSize = _sWebPage->viewportSize();
+    _sWebPage->setViewportSize(targetSize);
+#ifdef Q_OS_WIN
+    QImage::Format format = QImage::Format_ARGB32_Premultiplied;
+#else
+    QImage::Format format = QImage::Format_ARGB32;
+#endif
+    QImage res(tRect.size(), format);
+    res.fill(Qt::transparent);
+    QPainter painter;
+    int chipSize = 4096;
+    int xChipNum = (res.width()+chipSize -1)/chipSize;
+    int yChipNum = (res.height()+chipSize -1)/chipSize;
+    for (int x = 0; x < xChipNum; ++x) {
+        for (int y = 0; y < yChipNum; ++y) {
+            QImage tmpBuffer(chipSize, chipSize, format);
+            tmpBuffer.fill(Qt::transparent);
+            painter.begin(&tmpBuffer);
+            painter.setRenderHint(QPainter::Antialiasing, true);
+            painter.setRenderHint(QPainter::TextAntialiasing, true);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+            painter.translate(-tRect.left(), -tRect.top());
+            painter.translate(-x * chipSize, -y * chipSize);
+            _sWebPage->mainFrame()->render(&painter, QRegion(tRect));
+            painter.end();
+
+            // do merge
+            painter.begin(&res);
+            painter.setCompositionMode(QPainter::CompositionMode_Source);
+            painter.drawImage(x * chipSize, y * chipSize, tmpBuffer);
+            painter.end();
+        }
+    }
+    _sWebPage->setViewportSize(oriViewportSize);
+    return res;
 }
 
 QFile SeimiPage::generatePdf(){
     //todo
+    return 0;
 }
