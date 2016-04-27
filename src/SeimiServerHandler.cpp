@@ -41,10 +41,10 @@ SeimiServerHandler::SeimiServerHandler(QObject *parent):Pillow::HttpHandler(pare
 bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     QString method = connection->requestMethod();
     QString path = connection->requestPath();
-//    if(method == "GET"){
-//        connection->writeResponse(405, Pillow::HttpHeaderCollection(),"Method 'GET' is not supprot,please use 'POST'");
-//        return true;
-//    }
+    if(method == "GET"){
+        connection->writeResponse(405, Pillow::HttpHeaderCollection(),"Method 'GET' is not supprot,please use 'POST'");
+        return true;
+    }
     if(path != "/doload"){
         return false;
     }
