@@ -121,10 +121,11 @@ void SeimiPage::setPostParam(QString &jsonStr){
 }
 
 QImage SeimiPage::generateImg(QSize &targetSize){
-    if(targetSize.isNull()||targetSize.width()==0||targetSize.height()==0){
-        targetSize = _sWebPage->viewportSize();
+    if(targetSize.isNull()||targetSize.width()<=0||targetSize.height()<=0){
+        targetSize = _sWebPage->mainFrame()->contentsSize();
     }
     QRect tRect = QRect(QPoint(0, 0), targetSize);
+    qInfo()<<"finalSize:"<<targetSize;
     QSize oriViewportSize = _sWebPage->viewportSize();
     _sWebPage->setViewportSize(targetSize);
 #ifdef Q_OS_WIN

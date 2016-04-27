@@ -41,10 +41,10 @@ SeimiServerHandler::SeimiServerHandler(QObject *parent):Pillow::HttpHandler(pare
 bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     QString method = connection->requestMethod();
     QString path = connection->requestPath();
-    if(method == "GET"){
-        connection->writeResponse(405, Pillow::HttpHeaderCollection(),"Method 'GET' is not supprot,please use 'POST'");
-        return true;
-    }
+//    if(method == "GET"){
+//        connection->writeResponse(405, Pillow::HttpHeaderCollection(),"Method 'GET' is not supprot,please use 'POST'");
+//        return true;
+//    }
     if(path != "/doload"){
         return false;
     }
@@ -87,6 +87,9 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     seimiPage->toLoad(url,renderTime);
     eventLoop.exec();
     Pillow::HttpHeaderCollection headers;
+    headers << Pillow::HttpHeader("Pragma", "no-cache");
+    headers << Pillow::HttpHeader("Expires", "-1");
+    headers << Pillow::HttpHeader("Cache-Control", "no-cache");
     if(contentType == "pdf"){
         headers << Pillow::HttpHeader("Content-Type", "application/octet-stream");
     }else if(contentType == "img"){
@@ -105,6 +108,10 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
         QBuffer buffer(&out);
         buffer.open(QIODevice::WriteOnly);
         imgContent.save(&buffer,"png",-1);
+        QCryptographicHash md5sum(QCryptographicHash::Md5);
+        md5sum.addData(out);
+        QByteArray etag = md5sum.result().toHex();
+        headers << Pillow::HttpHeader("ETag", etag);
         connection->writeResponse(200,headers,out);
     }else{
         headers << Pillow::HttpHeader("Content-Type", "text/html;charset=utf-8");
