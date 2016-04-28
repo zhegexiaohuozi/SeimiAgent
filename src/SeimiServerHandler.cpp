@@ -91,7 +91,13 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     headers << Pillow::HttpHeader("Expires", "-1");
     headers << Pillow::HttpHeader("Cache-Control", "no-cache");
     if(contentType == "pdf"){
-        headers << Pillow::HttpHeader("Content-Type", "application/octet-stream");
+        headers << Pillow::HttpHeader("Content-Type", "application/pdf");
+        QByteArray pdfContent = seimiPage->generatePdf();
+        QCryptographicHash md5sum(QCryptographicHash::Md5);
+        md5sum.addData(pdfContent);
+        QByteArray etag = md5sum.result().toHex();
+        headers << Pillow::HttpHeader("ETag", etag);
+        connection->writeResponse(200,headers,pdfContent);
     }else if(contentType == "img"){
         headers << Pillow::HttpHeader("Content-Type", "image/png");
         QSize targetSize;
@@ -103,16 +109,12 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
                 targetSize.setHeight(matchImgSize.captured("ySize").toInt());
             }
         }
-        QImage imgContent = seimiPage->generateImg(targetSize);
-        QByteArray out;
-        QBuffer buffer(&out);
-        buffer.open(QIODevice::WriteOnly);
-        imgContent.save(&buffer,"png",-1);
+        QByteArray imgContent = seimiPage->generateImg(targetSize);
         QCryptographicHash md5sum(QCryptographicHash::Md5);
-        md5sum.addData(out);
+        md5sum.addData(imgContent);
         QByteArray etag = md5sum.result().toHex();
         headers << Pillow::HttpHeader("ETag", etag);
-        connection->writeResponse(200,headers,out);
+        connection->writeResponse(200,headers,imgContent);
     }else{
         headers << Pillow::HttpHeader("Content-Type", "text/html;charset=utf-8");
         connection->writeResponse(200, headers,seimiPage->getContent().toUtf8());

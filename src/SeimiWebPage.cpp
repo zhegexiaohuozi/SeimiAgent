@@ -24,8 +24,11 @@
 #include <QJsonObject>
 #include <QNetworkRequest>
 #include <QPainter>
+#include <QTemporaryFile>
+#include <QBuffer>
 #include "NetworkAccessManager.h"
 #include "SeimiAgent.h"
+#include <QPrinter>
 
 SeimiPage::SeimiPage(QObject *parent) : QObject(parent)
 {
@@ -120,7 +123,7 @@ void SeimiPage::setPostParam(QString &jsonStr){
     _postParamStr = jsonStr;
 }
 
-QImage SeimiPage::generateImg(QSize &targetSize){
+QByteArray SeimiPage::generateImg(QSize &targetSize){
     if(targetSize.isNull()||targetSize.width()<=0||targetSize.height()<=0){
         targetSize = _sWebPage->mainFrame()->contentsSize();
     }
@@ -133,12 +136,12 @@ QImage SeimiPage::generateImg(QSize &targetSize){
 #else
     QImage::Format format = QImage::Format_ARGB32;
 #endif
-    QImage res(tRect.size(), format);
-    res.fill(Qt::transparent);
+    QImage imgRes(tRect.size(), format);
+    imgRes.fill(Qt::transparent);
     QPainter painter;
     int chipSize = 4096;
-    int xChipNum = (res.width()+chipSize -1)/chipSize;
-    int yChipNum = (res.height()+chipSize -1)/chipSize;
+    int xChipNum = (imgRes.width()+chipSize -1)/chipSize;
+    int yChipNum = (imgRes.height()+chipSize -1)/chipSize;
     for (int x = 0; x < xChipNum; ++x) {
         for (int y = 0; y < yChipNum; ++y) {
             QImage tmpBuffer(chipSize, chipSize, format);
@@ -151,19 +154,31 @@ QImage SeimiPage::generateImg(QSize &targetSize){
             painter.translate(-x * chipSize, -y * chipSize);
             _sWebPage->mainFrame()->render(&painter, QRegion(tRect));
             painter.end();
-
             // do merge
-            painter.begin(&res);
+            painter.begin(&imgRes);
             painter.setCompositionMode(QPainter::CompositionMode_Source);
             painter.drawImage(x * chipSize, y * chipSize, tmpBuffer);
             painter.end();
         }
     }
     _sWebPage->setViewportSize(oriViewportSize);
-    return res;
+    QByteArray out;
+    QBuffer buffer(&out);
+    buffer.open(QIODevice::WriteOnly);
+    imgRes.save(&buffer,"png",-1);
+    return out;
 }
 
-QFile SeimiPage::generatePdf(){
-    //todo
-    return 0;
+QByteArray SeimiPage::generatePdf(){
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setPageSize(QPrinter::A4);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setPageMargins(0, 0, 0, 0, QPrinter::Point);
+    QTemporaryFile pdf;
+    pdf.open();
+    printer.setOutputFileName(pdf.fileName());
+    _sWebPage->mainFrame()->print(&printer);
+    QByteArray out = pdf.readAll();
+    pdf.deleteLater();
+    return out;
 }

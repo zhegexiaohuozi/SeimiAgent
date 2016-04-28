@@ -1,6 +1,6 @@
-QT += webkitwidgets network
+QT += webkitwidgets network printsupport
 
-TARGET = SeimiAgent
+TARGET = seimiagent
 
 DESTDIR = ../bin
 
