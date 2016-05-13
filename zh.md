@@ -37,6 +37,9 @@ cd /dir/of/seimiAgent
 - `useCookie`
 是否使用cookie，如果设置为1则为使用cookie
 
+- `contentType`
+定义渲染结果的生成格式，可以选择的值有`img`或是`pdf`，默认值为`html`。
+
 # 如何构建 #
 这个过程会花费很长时间如果你觉着很有必要的话，一般情况下更推荐使用发布好的二进制可执行文件
 

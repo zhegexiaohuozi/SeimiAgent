@@ -38,6 +38,9 @@ Json string only,tell seimiAgent you want to use http post method and pass the p
 - `useCookie`
 If `useCookie`==1,seimiAgent deem you want to use cookie.Default 0.
 
+- `contentType`
+Determine the output format,you can choose `img` or `pdf`,default is `html`.
+
 # How to build #
 It will take a very long time to build,so it is recommended to use the premade binary file in 'Download'.
 
