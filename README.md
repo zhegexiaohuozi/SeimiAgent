@@ -6,12 +6,12 @@ A headless,standalone webkit server which make grabing dynamic web page easier.
 # DownLoad #
 - [Linux v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.1.0_x86_64.tar.gz)
 
-- [window7 x64 Just having a look](http://seimidl.wanghaomiao.cn/seimiagent_windows_x86_64_v1.0.zip)
+- [window7 v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_windows7_v1.1_x86_64.zip)
 
 # Quick Start #
 ```
 cd /dir/of/seimiAgent
-./SeimiAgent -p 8000
+./seimiagent -p 8000
 ```
 SeimiAgent will start and listen on the port that you set.Than you can use any http client tools post a load reqest to SeimiAgent and get back the content which just like chrome do.Http client tools you can use:
 apache `httpclient` of java,`curl` of cmd,`httplib2` of python including, but not limited to.

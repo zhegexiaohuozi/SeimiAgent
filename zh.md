@@ -2,16 +2,16 @@
 SeimiAgent是基于QtWebkit开发的可在服务器端后台运行的一个webkit服务，可以通过SeimiAgent提供的http接口向SeimiAgent发送一个load请求（需求加载的URL以及对这个页面接受的渲染时间或是使用什么代理等参数），通过SeimiAgent去加载并渲染想要处理的动态页面，然后将渲染好的页面直接返给调用方进行后续处理，所以运行的SeimiAgent服务是与语言无关的，任何一种语言或框架都可以通过SeimiAgent提供的标准http接口来获取服务。SeimiAgent的加载渲染环境都是通用浏览器级的，所以不用担心他对动态页面的处理能力。目前SeimiAgent只支持返回渲染好的HTML文档，后续会增加图像快照已经PDF的支持，方便更为多样化的使用需求。
 
 # 下载 #
-目前暂时只支持下面这两个平台的二进制版本的维护更新，其他平台暂时需要自行编译构建
+Linux包是常见Linux平台通用的，Mac等其他平台暂时需要自行编译构建
 
 - [Linux v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.1.0_x86_64.tar.gz)
 
-- [window7 x64体验包](http://seimidl.wanghaomiao.cn/seimiagent_windows_x86_64_v1.0.zip)
+- [window7 v1.1 x64体验包](http://seimidl.wanghaomiao.cn/seimiagent_windows7_v1.1_x86_64.zip)
 
 # 快速开始 #
 ```
 cd /dir/of/seimiAgent
-./SeimiAgent -p 8000
+./seimiagent -p 8000
 ```
 执行命令后，SeimiAgent会起一个http服务并监听你所指定的端口，如例子中的8000端口，然后你就可以通过任何一种你熟悉的语言像SeimiAgent发送一个页面的加载渲染请求，并得到SeimiAgent渲染好的HTML文档进行后续处理。
 
