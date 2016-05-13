@@ -170,9 +170,18 @@ QByteArray SeimiPage::generateImg(QSize &targetSize){
 }
 
 QByteArray SeimiPage::generatePdf(){
-    QPrinter printer(QPrinter::HighResolution);
+    int contentWidth = _sWebPage->mainFrame()->contentsSize().width();
+    int contentHeight = _sWebPage->mainFrame()->contentsSize().height();
+    if(contentWidth <=0||contentHeight<=0){
+        return QByteArray();
+    }
+    QPrinter printer;
+    printer.setResolution(120);
     printer.setPageSize(QPrinter::A4);
     printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOrientation(QPrinter::Portrait);
+    printer.setFullPage(true);
+    printer.setCollateCopies(true);
     printer.setPageMargins(0, 0, 0, 0, QPrinter::Point);
     QTemporaryFile pdf;
     pdf.open();
