@@ -4,7 +4,7 @@ SeimiAgent是基于QtWebkit开发的可在服务器端后台运行的一个webki
 # 下载 #
 Linux包是常见Linux平台通用的，Mac等其他平台暂时需要自行编译构建
 
-- [Linux v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.1.0_x86_64.tar.gz)
+- [centos6 v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.1.0_x86_64.tar.gz)
 
 - [window7 v1.1 x64体验包](http://seimidl.wanghaomiao.cn/seimiagent_windows7_v1.1_x86_64.zip)
 
