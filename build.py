@@ -367,18 +367,23 @@ class SeimiAgentBuilder(object):
         if self.make(".") != 0:
             raise RuntimeError("Building SeimiAgent failed.")
 
-    # ensure the git submodules are all available
-    def ensureSubmodulesAvailable(self):
+    def ensureDepssAvailable(self):
         if self.options.skip_git: return
         try:
             if not self.options.skip_qtbase:
-                self.execute(["git", "clone", "https://github.com/zhegexiaohuozi/qtbase.git"], "src/qt")
+                qtbase_source = "https://github.com/zhegexiaohuozi/qtbase.git"
+                if self.options.china:
+                    qtbase_source = "https://git.oschina.net/xiaohuo/qtbase.git"
+                self.execute(["git", "clone", qtbase_source], "src/qt")
                 self.execute(["git", "checkout", "phantomjs"], "src/qt/qtbase")
         except Exception as e:
             pass
         try:
             if not self.options.skip_qtwebkit:
-                self.execute(["git", "clone", "https://github.com/zhegexiaohuozi/qtwebkit.git"], "src/qt")
+                qtwebkit_src = "https://github.com/zhegexiaohuozi/qtwebkit.git"
+                if self.options.china:
+                    qtwebkit_src = "https://git.oschina.net/xiaohuo/qtwebkit.git"
+                self.execute(["git", "clone", qtwebkit_src], "src/qt")
                 self.execute(["git", "checkout", "phantomjs"], "src/qt/qtwebkit")
         except Exception as x:
             pass
@@ -400,7 +405,7 @@ class SeimiAgentBuilder(object):
         if self.options.package:
             self.package()
         else:
-            self.ensureSubmodulesAvailable()
+            self.ensureDepssAvailable()
             self.buildQtBase()
             self.buildQtWebKit()
             self.buildSeimiAgent()
@@ -461,6 +466,7 @@ def parseArguments():
     advanced.add_argument("--skip-git", action="store_true",
                           help="Skip all actions that require Git.  For use when building from "
                                "a tarball release.")
+    advanced.add_argument("-cn", "--china", action="store_true", help="Dependence source change to china,for faster download.")
     options = parser.parse_args()
     if options.debug and options.release:
         raise RuntimeError("Cannot build with both debug and release mode enabled.")
