@@ -15,3 +15,8 @@
 *.pro.user
 src/qt/qtbase
 src/qt/qtwebkit
+/*.sdf
+/*.sln
+/*.suo
+/ipch
+/bin

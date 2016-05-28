@@ -176,13 +176,16 @@ QByteArray SeimiPage::generatePdf(){
         return QByteArray();
     }
     QPrinter printer;
-    printer.setResolution(120);
     printer.setPageSize(QPrinter::A4);
-    printer.setOutputFormat(QPrinter::PdfFormat);
+	printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOrientation(QPrinter::Portrait);
     printer.setFullPage(true);
     printer.setCollateCopies(true);
-    printer.setPageMargins(0, 0, 0, 0, QPrinter::Point);
+	printer.setPageMargins(0, 0, 0, 0, QPrinter::DevicePixel);
+	//try again and again,finally get the relationship between in contentWidth,printerWidth,dpi.
+	int coefDpi = contentWidth * 100 / printer.width();
+	qInfo() <<"content W:"<<contentWidth<< " A4 w:" << printer.width() << "coef:"<<coefDpi;
+    printer.setResolution(coefDpi);
     QTemporaryFile pdf;
     pdf.open();
     printer.setOutputFileName(pdf.fileName());
