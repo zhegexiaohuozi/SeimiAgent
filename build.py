@@ -50,9 +50,9 @@ import subprocess
 import re
 import multiprocessing
 
-# root = os.path.abspath(os.path.dirname(__file__))
-# third_party_names = ["libicu", "libxml", "openssl", "zlib"]
-# third_party_path = os.path.join(root, "src", "qt", "3rdparty")
+root = os.path.abspath(os.path.dirname(__file__))
+third_party_names = ["libicu", "libxml", "openssl", "zlib"]
+third_party_path = os.path.join(root, "src", "qt", "3rdparty")
 
 openssl_search_paths = [{
     "name": "Brew",
@@ -346,6 +346,7 @@ class SeimiAgentBuilder(object):
             "WEBKIT_CONFIG-=use_gstreamer",
             "WEBKIT_CONFIG-=use_gstreamer010",
             "WEBKIT_CONFIG-=use_native_fullscreen_video",
+            "WEBKIT_CONFIG-=use_webp",
             "WEBKIT_CONFIG-=video",
             "WEBKIT_CONFIG-=web_audio",
         ]
@@ -425,7 +426,8 @@ def parseArguments():
                         help="Silently confirm the build.")
     parser.add_argument("-n", "--dry-run", action="store_true",
                         help="Only print what would be done without actually executing anything.")
-    parser.add_argument("-p","--package",type=str,help="final package name suffix")
+    parser.add_argument("-p","--package",type=str,help="final package name suffix.")
+    parser.add_argument("-v","--version",type=str,help="final package version.")
 
     # NOTE: silent build does not exist on windows apparently
     if platform.system() != "Windows":
