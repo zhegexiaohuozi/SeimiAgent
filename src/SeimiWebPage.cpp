@@ -181,7 +181,7 @@ QByteArray SeimiPage::generatePdf(){
     printer.setOrientation(QPrinter::Portrait);
     printer.setFullPage(true);
     printer.setCollateCopies(true);
-	printer.setPageMargins(0, 0, 0, 0, QPrinter::DevicePixel);
+    printer.setPageMargins(0, 0, 0, 0, QPrinter::Point);
 	//try again and again,finally get the relationship between in contentWidth,printerWidth,dpi.
 	int coefDpi = contentWidth * 100 / printer.width();
 	qInfo() <<"content W:"<<contentWidth<< " A4 w:" << printer.width() << "coef:"<<coefDpi;

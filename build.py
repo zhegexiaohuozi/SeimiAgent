@@ -392,10 +392,13 @@ class SeimiAgentBuilder(object):
     def package(self):
         binDir = os.path.abspath("bin")
         if os.path.exists(binDir):
-            self.execute(["mkdir","seimiagent"],"./")
-            self.execute(["cp","-rf","bin","zh.md","README.md","LICENSE.md","seimiagent"],"./")
-            self.execute(["tar","czvf","seimiagent_%s_%s.tar.gz"%(self.options.package,platform.machine()),"seimiagent"],"./")
-            self.execute(["rm","-rf","seimiagent"],"./")
+            targetDir = "seimiagent_%s" % self.options.version
+            self.execute(["mkdir", targetDir], "./")
+            self.execute(["cp", "-rf", "bin", "zh.md", "README.md", "LICENSE.md", targetDir], "./")
+            self.execute(
+                ["tar", "czvf", "seimiagent_%s_%s.tar.gz" % (self.options.package, platform.machine()), targetDir],
+                "./")
+            self.execute(["rm", "-rf", targetDir], "./")
         else:
             print("SeimiAgent not build.")
 
@@ -412,7 +415,6 @@ class SeimiAgentBuilder(object):
             self.buildSeimiAgent()
 
 
-
 # parse command line arguments and return the result
 def parseArguments():
     parser = argparse.ArgumentParser(description="Build SeimiAgent from sources.")
@@ -426,8 +428,8 @@ def parseArguments():
                         help="Silently confirm the build.")
     parser.add_argument("-n", "--dry-run", action="store_true",
                         help="Only print what would be done without actually executing anything.")
-    parser.add_argument("-p","--package",type=str,help="final package name suffix.")
-    parser.add_argument("-v","--version",type=str,help="final package version.")
+    parser.add_argument("-p", "--package", type=str, help="final package name suffix.")
+    parser.add_argument("-v", "--version", type=str, help="final package version.")
 
     # NOTE: silent build does not exist on windows apparently
     if platform.system() != "Windows":
@@ -468,7 +470,8 @@ def parseArguments():
     advanced.add_argument("--skip-git", action="store_true",
                           help="Skip all actions that require Git.  For use when building from "
                                "a tarball release.")
-    advanced.add_argument("-cn", "--china", action="store_true", help="Dependence source change to china,for faster download.")
+    advanced.add_argument("-cn", "--china", action="store_true",
+                          help="Dependence source change to china,for faster download.")
     options = parser.parse_args()
     if options.debug and options.release:
         raise RuntimeError("Cannot build with both debug and release mode enabled.")
