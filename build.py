@@ -396,7 +396,7 @@ class SeimiAgentBuilder(object):
             self.execute(["mkdir", targetDir], "./")
             self.execute(["cp", "-rf", "bin", "zh.md", "README.md", "LICENSE.md", targetDir], "./")
             self.execute(
-                ["tar", "czvf", "seimiagent_%s_%s.tar.gz" % (self.options.package, platform.machine()), targetDir],
+                ["tar", "czvf", "seimiagent_%s_%s_%s.tar.gz" % (self.options.package,self.options.version, platform.machine()), targetDir],
                 "./")
             self.execute(["rm", "-rf", targetDir], "./")
         else:
