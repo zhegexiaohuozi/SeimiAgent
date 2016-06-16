@@ -6,7 +6,9 @@ A headless,standalone webkit server which make grabing dynamic web page easier.
 # DownLoad #
 - [ubuntu v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_ubuntu_v1.1_x86_64.tar.gz)
 
-- [centos6 v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.1.0_x86_64.tar.gz)
+- [centos6 v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.1_x86_64.tar.gz)
+
+- [Linux v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.1_x86_64.tar.gz)
 
 - [window7 v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_windows7_v1.1_x86_64.zip)
 
