@@ -46,7 +46,7 @@ void SeimiAgent::cleanAllcookies(){
 
 int SeimiAgent::run(int argc, char *argv[]){
     QApplication a(argc, argv);
-    a.setApplicationVersion("1.0.0");
+    a.setApplicationVersion("1.2.0");
     a.setApplicationName("SeimiAgent,a headless,standalone webkit server which make grabing dynamic web page easier.");
     QCommandLineParser parser;
     parser.addHelpOption();

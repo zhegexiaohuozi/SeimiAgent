@@ -50,7 +50,7 @@ void SeimiPage::loadAllFinished(bool){
 void SeimiPage::renderFinalHtml(){
     if(!_script.isEmpty()){
         QVariant res = _sWebPage->mainFrame()->evaluateJavaScript(_script);
-        qInfo("[Seimi] EvaluateJavaScript done. result=%s , js=%s",res.toString().toUtf8().constData(),_script.toUtf8().constData());
+        qInfo("[Seimi] EvaluateJavaScript done. script=%s",_script.toUtf8().constData());
     }
     qInfo("[Seimi] Document render out over.");
     _content = _sWebPage->mainFrame()->toHtml();
@@ -128,7 +128,7 @@ QByteArray SeimiPage::generateImg(QSize &targetSize){
         targetSize = _sWebPage->mainFrame()->contentsSize();
     }
     QRect tRect = QRect(QPoint(0, 0), targetSize);
-    qInfo()<<"finalSize:"<<targetSize;
+    qDebug()<<"finalSize:"<<targetSize;
     QSize oriViewportSize = _sWebPage->viewportSize();
     _sWebPage->setViewportSize(targetSize);
 #ifdef Q_OS_WIN
@@ -184,7 +184,7 @@ QByteArray SeimiPage::generatePdf(){
     printer.setPageMargins(0, 0, 0, 0, QPrinter::Point);
 	//try again and again,finally get the relationship between in contentWidth,printerWidth,dpi.
 	int coefDpi = contentWidth * 100 / printer.width();
-	qInfo() <<"content W:"<<contentWidth<< " A4 w:" << printer.width() << "coef:"<<coefDpi;
+    qDebug() <<"content W:"<<contentWidth<< " A4 w:" << printer.width() << "coef:"<<coefDpi;
     printer.setResolution(coefDpi);
     QTemporaryFile pdf;
     pdf.open();

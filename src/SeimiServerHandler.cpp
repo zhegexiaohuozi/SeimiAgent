@@ -77,7 +77,7 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     }
 
     QString jscript = QUrl::fromPercentEncoding(connection->requestParamValue(scriptP).toUtf8());
-    qDebug()<<"recive js:"<<jscript;
+//    qDebug()<<"recive js:"<<jscript;
     QString postParamJson = connection->requestParamValue(postParamP);
     seimiPage->setScript(jscript);
     seimiPage->setPostParam(postParamJson);

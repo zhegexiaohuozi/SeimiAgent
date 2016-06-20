@@ -19,7 +19,7 @@
 
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
-
+#include <QTimer>
 class NetworkAccessManager : public QNetworkAccessManager
 {
     Q_OBJECT
@@ -37,13 +37,23 @@ private:
     qint64 requestFinishedSecureCount;
     qint64 requestFinishedDownloadBufferCount;
     QString _currentMainTarget;
-
+signals:
+    void resourceTimeOut();
 public slots:
     void requestFinished(QNetworkReply *reply);
+    void resourceTimeout();
 
 #ifndef QT_NO_OPENSSL
     void sslErrors(QNetworkReply *reply, const QList<QSslError> &error);
 #endif
 };
 
+class RequestTimer : public QTimer
+{
+    Q_OBJECT
+
+public:
+    RequestTimer(QObject* parent = 0);
+    QNetworkReply* reply;
+};
 #endif // NETWORKACCESSMANAGER_H

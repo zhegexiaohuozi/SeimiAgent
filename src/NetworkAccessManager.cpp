@@ -40,12 +40,28 @@ NetworkAccessManager::NetworkAccessManager(QObject *parent)
     setCache(diskCache);
 }
 
+RequestTimer::RequestTimer(QObject* parent)
+    : QTimer(parent)
+{
+}
+
 QNetworkReply* NetworkAccessManager::createRequest(Operation op, const QNetworkRequest & req, QIODevice * outgoingData)
 {
     QNetworkRequest request = req;
 //    req.setAttribute();
     request.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
-    return QNetworkAccessManager::createRequest(op, request, outgoingData);
+
+    QNetworkReply* reply = QNetworkAccessManager::createRequest(op, request, outgoingData);
+
+    RequestTimer* rt = new RequestTimer(reply);
+    rt->reply = reply;
+    rt->setInterval(5000);
+    rt->setSingleShot(true);
+    rt->start();
+
+    connect(rt, SIGNAL(timeout()), this, SLOT(resourceTimeout()));
+
+    return reply;
 }
 
 void NetworkAccessManager::requestFinished(QNetworkReply *reply)
@@ -94,4 +110,14 @@ void NetworkAccessManager::sslErrors(QNetworkReply *reply, const QList<QSslError
 
 void NetworkAccessManager::setCurrentUrl(const QString &current){
     _currentMainTarget = current;
+}
+
+void NetworkAccessManager::resourceTimeout(){
+    RequestTimer* rt = qobject_cast<RequestTimer*>(sender());
+    if (!rt->reply) {
+        return;
+    }
+    // Abort the reply that we attached to the Network Timeout
+    qDebug()<<"Resource request timeout.";
+    rt->reply->abort();
 }
