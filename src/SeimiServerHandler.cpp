@@ -50,7 +50,7 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     }
     QEventLoop eventLoop;
     SeimiPage *seimiPage=new SeimiPage(this);
-    QString url = connection->requestParamValue(urlP);
+    QString url = QUrl::fromPercentEncoding(connection->requestParamValue(urlP).toUtf8());
     int renderTime = connection->requestParamValue(renderTimeP).toInt();
     QString proxyStr = connection->requestParamValue(proxyP);
     QString contentType = connection->requestParamValue(contentTypeP);
@@ -76,7 +76,8 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
         }
     }
 
-    QString jscript = connection->requestParamValue(scriptP);
+    QString jscript = QUrl::fromPercentEncoding(connection->requestParamValue(scriptP).toUtf8());
+    qDebug()<<"recive js:"<<jscript;
     QString postParamJson = connection->requestParamValue(postParamP);
     seimiPage->setScript(jscript);
     seimiPage->setPostParam(postParamJson);
