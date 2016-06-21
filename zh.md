@@ -8,12 +8,6 @@ SeimiAgent是基于QtWebkit开发的可在服务器端后台运行的一个webki
 
 - [window7 v1.1 x64体验包](http://seimidl.wanghaomiao.cn/seimiagent_windows7_v1.1_x86_64.zip)
 
-# Change Log #
-## v1.1 ##
-- 支持通过`contentType`参数来指定生成的结果的文件格式，新增图片和PDF两种格式的支持。可以通过`img`或是`pdf`这两个值来指定。
-
-- 添加Linux 64位平台通用包
-
 # 快速开始 #
 ```
 cd /dir/of/seimiAgent
@@ -70,3 +64,18 @@ python build.py
 
 # More #
 更多文档还在准备中，感谢大家支持Seimi家族([SeimiCrawler](https://github.com/zhegexiaohuozi/SeimiCrawler),[SeimiAgent](https://github.com/zhegexiaohuozi/SeimiAgent))
+
+# Change Log #
+
+## v1.2 ##
+
+- 支持执行自定义的js脚本
+
+- 默认发行包去掉对`libwebp`的依赖，使之适用平台范围更广
+
+- 优化图片以及PDF的渲染
+
+## v1.1 ##
+- 支持通过`contentType`参数来指定生成的结果的文件格式，新增图片和PDF两种格式的支持。可以通过`img`或是`pdf`这两个值来指定。
+
+- 添加Linux 64位平台通用包
