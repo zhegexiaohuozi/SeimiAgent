@@ -2,11 +2,9 @@
 SeimiAgent是基于QtWebkit开发的可在服务器端后台运行的一个webkit服务，可以通过SeimiAgent提供的http接口向SeimiAgent发送一个load请求（需求加载的URL以及对这个页面接受的渲染时间或是使用什么代理等参数），通过SeimiAgent去加载并渲染想要处理的动态页面，然后将渲染好的页面直接返给调用方进行后续处理，所以运行的SeimiAgent服务是与语言无关的，任何一种语言或框架都可以通过SeimiAgent提供的标准http接口来获取服务。SeimiAgent的加载渲染环境都是通用浏览器级的，所以不用担心他对动态页面的处理能力。目前SeimiAgent只支持返回渲染好的HTML文档，后续会增加图像快照已经PDF的支持，方便更为多样化的使用需求。
 
 # 下载 #
-- [ubuntu v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_ubuntu_v1.1_x86_64.tar.gz)
 
-- [centos6 v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.1_x86_64.tar.gz)
-
-- [Linux v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.1_x86_64.tar.gz)
+- [Linux v1.2 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.2_x86_64.tar.gz)
+(support ubuntu14+,centos6+)
 
 - [window7 v1.1 x64体验包](http://seimidl.wanghaomiao.cn/seimiagent_windows7_v1.1_x86_64.zip)
 
@@ -45,6 +43,11 @@ cd /dir/of/seimiAgent
 
 - `contentType`
 定义渲染结果的生成格式，可以选择的值有`img`或是`pdf`，默认值为`html`。
+
+
+- `script`
+可以传一段js脚本并在渲染好页面后执行，就像是在chrome的控制台中执行的一样。
+
 
 # 如何构建 #
 这个过程会花费很长时间如果你觉着很有必要的话，一般情况下更推荐使用发布好的二进制可执行文件

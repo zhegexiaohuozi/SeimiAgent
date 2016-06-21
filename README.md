@@ -4,11 +4,9 @@ A headless,standalone webkit server which make grabing dynamic web page easier.
 [中文文档](https://github.com/zhegexiaohuozi/SeimiAgent/blob/master/zh.md)
 
 # DownLoad #
-- [ubuntu v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_ubuntu_v1.1_x86_64.tar.gz)
 
-- [centos6 v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.1_x86_64.tar.gz)
-
-- [Linux v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.1_x86_64.tar.gz)
+- [Linux v1.2 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.2_x86_64.tar.gz)
+(support ubuntu14+,centos6+)
 
 - [window7 v1.1 x64](http://seimidl.wanghaomiao.cn/seimiagent_windows7_v1.1_x86_64.zip)
 
@@ -42,6 +40,9 @@ If `useCookie`==1,seimiAgent deem you want to use cookie.Default 0.
 
 - `contentType`
 Determine the output format,you can choose `img` or `pdf`,default is `html`.
+
+- `script`
+A javascript script which can operate current html document and just seem like in chrome console to execute.
 
 # How to build #
 It will take a very long time to build,so it is recommended to use the premade binary file in 'Download'.
