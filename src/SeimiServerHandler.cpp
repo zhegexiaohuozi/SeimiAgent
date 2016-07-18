@@ -118,7 +118,9 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
         connection->writeResponse(200,headers,imgContent);
     }else{
         headers << Pillow::HttpHeader("Content-Type", "text/html;charset=utf-8");
-        connection->writeResponse(200, headers,seimiPage->getContent().toUtf8());
+        QString defBody = "<html>null</html>";
+        qInfo()<<"content:"<<seimiPage->getContent();
+        connection->writeResponse(200, headers,seimiPage->getContent().isEmpty()?defBody.toUtf8():seimiPage->getContent().toUtf8());
     }
     seimiPage->deleteLater();
     return true;

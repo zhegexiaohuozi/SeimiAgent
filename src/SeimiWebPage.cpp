@@ -52,10 +52,10 @@ void SeimiPage::renderFinalHtml(){
         QVariant res = _sWebPage->mainFrame()->evaluateJavaScript(_script);
         qInfo("[Seimi] EvaluateJavaScript done. script=%s",_script.toUtf8().constData());
     }
-    qInfo("[Seimi] Document render out over.");
     _content = _sWebPage->mainFrame()->toHtml();
     _isContentSet = true;
     emit loadOver();
+    qInfo("[Seimi] Document render out over.");
 }
 
 QString SeimiPage::getContent(){
@@ -92,7 +92,7 @@ void SeimiPage::toLoad(const QString &url,int renderTime){
         m_networkAccessManager->setProxy(_proxy);
     }
     if(_useCookie){
-        m_networkAccessManager->setCookieJar(SeimiAgent::instance()->getCookieJar());
+        m_networkAccessManager->setCookieJar(new CookieJar(this));
     }
     _sWebPage->setNetworkAccessManager(m_networkAccessManager);
     if(_postParamStr.isEmpty()){
@@ -109,7 +109,8 @@ void SeimiPage::toLoad(const QString &url,int renderTime){
             _sWebPage->mainFrame()->load(QNetworkRequest(QUrl(url)),QNetworkAccessManager::PostOperation,targetParams);
 
         }else{
-            qWarning("[seimi] postParam is invalid");
+            qWarning("[seimi] postParam[%s] is invalid",_postParamStr.toUtf8().constData());
+            renderFinalHtml();
         }
     }
 

@@ -26,7 +26,7 @@ static SeimiAgent* seimiAgentInstance = NULL;
 
 SeimiAgent::SeimiAgent(QObject *parent) : QObject(parent)
 {
-    _defaultCookieJar = new CookieJar(this);
+
 }
 
 SeimiAgent* SeimiAgent::instance(){
@@ -36,13 +36,6 @@ SeimiAgent* SeimiAgent::instance(){
     return seimiAgentInstance;
 }
 
-CookieJar* SeimiAgent::getCookieJar(){
-    return _defaultCookieJar;
-}
-
-void SeimiAgent::cleanAllcookies(){
-    _defaultCookieJar->clearCookies();
-}
 
 int SeimiAgent::run(int argc, char *argv[]){
     QApplication a(argc, argv);

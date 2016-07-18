@@ -26,10 +26,7 @@ private:
 public:
     static SeimiAgent* instance();
     int run(int argc, char *argv[]);
-    CookieJar* getCookieJar();
-    void cleanAllcookies();
-private:
-    CookieJar* _defaultCookieJar;
+
 };
 
 #endif // SEIMIAGENT_H
