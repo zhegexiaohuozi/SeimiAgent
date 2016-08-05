@@ -92,11 +92,19 @@ void CookieJar::clear()
 
 void CookieJar::load()
 {
-    if (m_loaded)
-        return;
+//    if (m_loaded)
+//        return;
+    QString directory = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    if (directory.isEmpty()) {
+        directory = QDir::homePath() + QLatin1String("/.") + QCoreApplication::applicationName();
+    }
+    if (!QFile::exists(directory)) {
+        QDir dir;
+        dir.mkpath(directory);
+    }
     // load cookies and exceptions
     qRegisterMetaTypeStreamOperators<QList<QNetworkCookie> >("QList<QNetworkCookie>");
-    QSettings cookieSettings(QStandardPaths::writableLocation(QStandardPaths::DataLocation) + QLatin1String("/cookies.ini"), QSettings::IniFormat);
+    QSettings cookieSettings(directory + QLatin1String("/cookies.ini"), QSettings::IniFormat);
     setAllCookies(qvariant_cast<QList<QNetworkCookie> >(cookieSettings.value(QLatin1String("cookies"))));
     cookieSettings.beginGroup(QLatin1String("Exceptions"));
     m_exceptions_block = cookieSettings.value(QLatin1String("block")).toStringList();
@@ -135,9 +143,9 @@ void CookieJar::loadSettings()
 
 void CookieJar::save()
 {
-    if (!m_loaded)
-        return;
-    purgeOldCookies();
+//    if (!m_loaded)
+//        return;
+//    purgeOldCookies();
     QString directory = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
     if (directory.isEmpty()) {
         directory = QDir::homePath() + QLatin1String("/.") + QCoreApplication::applicationName();
