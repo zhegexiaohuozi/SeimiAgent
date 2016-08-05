@@ -55,6 +55,7 @@ int SeimiAgent::run(int argc, char *argv[]){
     if (!server.isListening())
         exit(1);
     qInfo() << "[seimi] SeimiAgent started,listening on :"<<portN;
+    QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
     Pillow::HttpHandler* handler = new Pillow::HttpHandlerStack(&server);
         new Pillow::HttpHandlerLog(handler);
         new SeimiServerHandler(handler);
