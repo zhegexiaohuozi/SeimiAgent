@@ -33,15 +33,6 @@
 
 SeimiPage::SeimiPage(QObject *parent) : QObject(parent)
 {
-//    QWebSettings* default_settings = QWebSettings::globalSettings();
-//            default_settings->setAttribute(QWebSettings::JavascriptEnabled,true);
-//            default_settings->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled,true);
-//            default_settings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled,true);
-//            default_settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls,true);
-//            default_settings->setAttribute(QWebSettings::LocalStorageEnabled,true);
-//            default_settings->setAttribute(QWebSettings::JavascriptCanAccessClipboard,true);
-//            default_settings->setAttribute(QWebSettings::DeveloperExtrasEnabled,true);
-//    _sWebPage->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
     _sWebPage = new QWebPage(this);
     QWebSettings* default_settings = _sWebPage->settings();
             default_settings->setAttribute(QWebSettings::JavascriptEnabled,true);
@@ -51,7 +42,6 @@ SeimiPage::SeimiPage(QObject *parent) : QObject(parent)
             default_settings->setAttribute(QWebSettings::LocalStorageEnabled,true);
             default_settings->setAttribute(QWebSettings::JavascriptCanAccessClipboard,true);
             default_settings->setAttribute(QWebSettings::DeveloperExtrasEnabled,true);
-    //    _sWebPage->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 
     _isContentSet = false;
     _isProxyHasBeenSet = false;
@@ -71,8 +61,8 @@ void SeimiPage::renderFinalHtml(){
     if(!_script.isEmpty()){
         QVariant evalResult;
         evalResult = _sWebPage->mainFrame()->evaluateJavaScript(_script);
-        qDebug() << "[Seimi] - evaluateJavaScript result" << evalResult;
-        qInfo("[Seimi] EvaluateJavaScript done. script=%s",_script.toUtf8().constData());
+        qDebug() << "[Seimi] - evaluateJavaScript result=" << evalResult;
+        qInfo()<< "[Seimi] evaluateJavaScript done. script=" << _script;
         QEventLoop eventLoop;
         QTimer::singleShot(_renderTime/2,&eventLoop,SLOT(quit()));
         eventLoop.exec();
