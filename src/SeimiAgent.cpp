@@ -39,7 +39,7 @@ SeimiAgent* SeimiAgent::instance(){
 
 int SeimiAgent::run(int argc, char *argv[]){
     QApplication a(argc, argv);
-    a.setApplicationVersion("1.2.1");
+    a.setApplicationVersion("1.2.2");
     a.setApplicationName("SeimiAgent,a headless,standalone webkit server which make grabing dynamic web page easier.");
     QCommandLineParser parser;
     parser.addHelpOption();
@@ -51,6 +51,9 @@ int SeimiAgent::run(int argc, char *argv[]){
     parser.process(a);
 
     int portN = parser.value("p").toInt();
+    if (portN == 0){
+        portN = 8000;
+    }
     Pillow::HttpServer server(QHostAddress("0.0.0.0"), portN);
     if (!server.isListening())
         exit(1);

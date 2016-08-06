@@ -1,7 +1,7 @@
 QT += webkitwidgets network printsupport
 
 TARGET = seimiagent
-
+CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 DESTDIR = ../bin
 
 SOURCES += main.cpp \
