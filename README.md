@@ -23,7 +23,7 @@ apache `httpclient` of java,`curl` of cmd,`httplib2` of python including, but no
 ![demo](http://77g8ty.com1.z0.glb.clouddn.com/seimiagentdemo.gif)
 
 - significantly simplify the login of a complex system by using js
-[![videoposter](http://seimidl.wanghaomiao.cn/seimiagent/seimiagent-js-login.jpg)](http://seimiagent.org/main/2016/08/06/seimiagent_js_jd_login.html)
+
 [you can view video in blog](http://seimiagent.org/main/2016/08/06/seimiagent_js_jd_login.html).
 
 ## Http parameters that seimiAgent support ##
