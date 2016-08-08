@@ -17,7 +17,17 @@ SeimiAgent will start and listen on the port that you set.Than you can use any h
 apache `httpclient` of java,`curl` of cmd,`httplib2` of python including, but not limited to.
 
 ## Demonstrates ##
+
+- basic
+
 ![demo](http://77g8ty.com1.z0.glb.clouddn.com/seimiagentdemo.gif)
+
+- significantly simplify the login of a complex system by using js
+
+<video id="video" controls="controls" preload="none" height="450" widht="720" poster="http://seimidl.wanghaomiao.cn/seimiagent/seimiagent-js-login.png">
+<source id="ogv" src="http://seimidl.wanghaomiao.cn/seimiagent/seimiagent-js-login.ogv" type="video/ogg">
+<p>Your user agent does not support the HTML5 Video element.Please click [here](http://v.youku.com/v_show/id_XMTY3NDIzNzYxMg==.html).</p>
+</video>
 
 ## Http parameters that seimiAgent support ##
 Only support post.Request path:`/doload`
