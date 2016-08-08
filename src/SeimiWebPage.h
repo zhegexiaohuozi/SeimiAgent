@@ -39,7 +39,7 @@ public slots:
     void loadAllFinished(bool);
     void renderFinalHtml();
     void processLog(int p);
-    void toLoad(const QString &url, int renderTime);
+    void toLoad(const QString &url, int renderTime, const QString &ua);
 
 public:
     bool isOver();

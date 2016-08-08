@@ -98,11 +98,12 @@ void SeimiPage::processLog(int p){
     qInfo("[seimi] TargetUrl[%s] process:%d%",_url.toUtf8().constData(),p);
 }
 
-void SeimiPage::toLoad(const QString &url,int renderTime){
+void SeimiPage::toLoad(const QString &url,int renderTime,const QString &ua){
     this->_url = url;
     this->_renderTime = renderTime;
     NetworkAccessManager *m_networkAccessManager = new NetworkAccessManager(this);
     m_networkAccessManager->setCurrentUrl(url);
+    m_networkAccessManager->setUserAgent(ua);
     if(isProxySet()){
         m_networkAccessManager->setProxy(_proxy);
     }

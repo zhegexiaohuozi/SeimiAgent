@@ -33,7 +33,8 @@ SeimiServerHandler::SeimiServerHandler(QObject *parent):Pillow::HttpHandler(pare
     useCookieP("useCookie"),
     postParamP("postParam"),
     contentTypeP("contentType"),
-    outImgSizeP("outImgSize")
+    outImgSizeP("outImgSize"),
+    uaP("ua")
 {
 
 }
@@ -55,6 +56,7 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     QString proxyStr = connection->requestParamValue(proxyP);
     QString contentType = connection->requestParamValue(contentTypeP);
     QString outImgSizeStr = connection->requestParamValue(outImgSizeP);
+    QString ua = connection->requestParamValue(uaP);
     if(!proxyStr.isEmpty()){
         QRegularExpression reProxy("(?<protocol>http|https|socket)://(?:(?<user>\\w*):(?<password>\\w*)@)?(?<host>[\\w.]+)(:(?<port>\\d+))?");
         QRegularExpressionMatch matchProxy = reProxy.match(proxyStr);
@@ -85,7 +87,7 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     int useCookieFlag = connection->requestParamValue(useCookieP).toInt();
     seimiPage->setUseCookie(useCookieFlag==1);
     QObject::connect(seimiPage,SIGNAL(loadOver()),&eventLoop,SLOT(quit()));
-    seimiPage->toLoad(url,renderTime);
+    seimiPage->toLoad(url,renderTime,ua);
     eventLoop.exec();
     Pillow::HttpHeaderCollection headers;
     headers << Pillow::HttpHeader("Pragma", "no-cache");

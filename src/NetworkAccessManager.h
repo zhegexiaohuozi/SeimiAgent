@@ -28,6 +28,7 @@ public:
     NetworkAccessManager(QObject *parent = 0);
     virtual QNetworkReply* createRequest ( Operation op, const QNetworkRequest & req, QIODevice * outgoingData = 0 );
     void setCurrentUrl(const QString &current);
+    void setUserAgent(const QString &ua);
 
 private:
     QList<QString> sslTrustedHostList;
@@ -37,6 +38,7 @@ private:
     qint64 requestFinishedSecureCount;
     qint64 requestFinishedDownloadBufferCount;
     QString _currentMainTarget;
+    QString _ua;
 signals:
     void resourceTimeOut();
 public slots:

@@ -33,6 +33,7 @@ private:
     QString postParamP;
     QString contentTypeP;
     QString outImgSizeP;
+    QString uaP;
 };
 
 #endif // SEIMISERVERHANDLER_H
