@@ -1,11 +1,6 @@
 # SeimiAgent #
 SeimiAgent是基于QtWebkit开发的可在服务器端后台运行的一个webkit服务，可以通过SeimiAgent提供的http接口向SeimiAgent发送一个load请求（需求加载的URL以及对这个页面接受的渲染时间或是使用什么代理等参数），通过SeimiAgent去加载并渲染想要处理的动态页面，然后将渲染好的页面直接返给调用方进行后续处理，所以运行的SeimiAgent服务是与语言无关的，任何一种语言或框架都可以通过SeimiAgent提供的标准http接口来获取服务。SeimiAgent的加载渲染环境都是通用浏览器级的，所以不用担心他对动态页面的处理能力。同时支持渲染生成页面快照（png）和PDF，亦支持自定义js脚本处理基本渲染后的页面，具体请参见下方使用说明。
 
-# 下载 #
-
-- [Linux v1.2.2 x64](http://seimidl.wanghaomiao.cn/seimiagent_linux_v1.2_x86_64.tar.gz)
-(support ubuntu14,ubuntu14+,centos6,contos6+)
-
 # 快速开始 #
 ```
 cd /dir/of/seimiAgent
@@ -39,6 +34,9 @@ cd /dir/of/seimiAgent
 
 - `script`
 可以传一段js脚本并在渲染好页面后执行，就像是在chrome的控制台中执行的一样。
+
+- `ua`
+自定义一个UserAgent，如果你需要
 
 
 # 如何构建 #
