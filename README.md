@@ -24,10 +24,8 @@ apache `httpclient` of java,`curl` of cmd,`httplib2` of python including, but no
 
 - significantly simplify the login of a complex system by using js
 
-<video id="video" controls="controls" preload="none" height="450" widht="720" poster="http://seimidl.wanghaomiao.cn/seimiagent/seimiagent-js-login.png">
-<source id="ogv" src="http://seimidl.wanghaomiao.cn/seimiagent/seimiagent-js-login.ogv" type="video/ogg">
-<p>Your user agent does not support the HTML5 Video element.Please click [here](http://v.youku.com/v_show/id_XMTY3NDIzNzYxMg==.html).</p>
-</video>
+![demo](http://seimidl.wanghaomiao.cn/seimiagent/seimiagent-js-login.gif)
+[more detail in blog](http://seimiagent.org/main/2016/08/06/seimiagent_js_jd_login.html).
 
 ## Http parameters that seimiAgent support ##
 Only support post.Request path:`/doload`
