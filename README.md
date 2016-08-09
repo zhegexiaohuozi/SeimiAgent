@@ -20,9 +20,9 @@ apache `httpclient` of java,`curl` of cmd,`httplib2` of python including, but no
 
 - basic
 
-![demo](http://wjcdn.u.qiniudn.com/seimiagent/demo.gif)
+![demo](http://img.wanghaomiao.cn/seimiagent/demo.gif)
 
-> [you can see it here,if it is  loaded fail in github](http://wjcdn.u.qiniudn.com/seimiagent/demo.gif)
+> [you can see it here,if it is  loaded fail in github](http://img.wanghaomiao.cn/seimiagent/demo.gif)
 
 - significantly simplify the login of a complex system by using js
 
