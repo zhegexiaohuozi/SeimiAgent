@@ -24,7 +24,7 @@ apache `httpclient` of java,`curl` of cmd,`httplib2` of python including, but no
 
 - significantly simplify the login of a complex system by using js
 
-[![videoposter](http://seimidl.wanghaomiao.cn/seimiagent/seimiagent-js-login.jpg)](http://seimiagent.org/main/2016/08/06/seimiagent_js_jd_login.html)
+[![videoposter](http://seimidl.wanghaomiao.cn/seimiagent/seimiagent-js-login-v2.jpg)](http://seimiagent.org/main/2016/08/06/seimiagent_js_jd_login.html)
 
 > [you can view video in blog](http://seimiagent.org/main/2016/08/06/seimiagent_js_jd_login.html).
 
