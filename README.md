@@ -22,7 +22,7 @@ apache `httpclient` of java,`curl` of cmd,`httplib2` of python including, but no
 
 ![demo](http://wjcdn.u.qiniudn.com/seimiagent/demo.gif)
 
-> [you can not see it here,if it is loaded fail in github](http://wjcdn.u.qiniudn.com/seimiagent/demo.gif)
+> [you can see it here,if it is  loaded fail in github](http://wjcdn.u.qiniudn.com/seimiagent/demo.gif)
 
 - significantly simplify the login of a complex system by using js
 
