@@ -55,27 +55,6 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     QString contentType = connection->requestParamValue(contentTypeP);
     QString outImgSizeStr = connection->requestParamValue(outImgSizeP);
     QString ua = connection->requestParamValue(uaP);
-    if(!proxyStr.isEmpty()){
-        QRegularExpression reProxy("(?<protocol>http|https|socket)://(?:(?<user>\\w*):(?<password>\\w*)@)?(?<host>[\\w.]+)(:(?<port>\\d+))?");
-        QRegularExpressionMatch matchProxy = reProxy.match(proxyStr);
-        if(matchProxy.hasMatch()){
-            QNetworkProxy proxy;
-            if(matchProxy.captured("protocol") == "socket"){
-                proxy.setType(QNetworkProxy::Socks5Proxy);
-            }else{
-                proxy.setType(QNetworkProxy::HttpProxy);
-            }
-            proxy.setHostName(matchProxy.captured("host"));
-            proxy.setPort(matchProxy.captured("port").toInt()==0?80:matchProxy.captured("port").toInt());
-            proxy.setUser(matchProxy.captured("user"));
-            proxy.setPassword(matchProxy.captured("password"));
-
-            seimiPage->setProxy(proxy);
-        }else {
-            qWarning("[seimi] proxy pattern error, proxy = %s",proxyStr.toUtf8().constData());
-        }
-    }
-
     QString jscript = QUrl::fromPercentEncoding(connection->requestParamValue(scriptP).toUtf8());
     QString postParamJson = connection->requestParamValue(postParamP);
     Pillow::HttpHeaderCollection headers;
@@ -85,6 +64,26 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     try{
         QEventLoop eventLoop;
         SeimiPage *seimiPage=new SeimiPage(this);
+        if(!proxyStr.isEmpty()){
+            QRegularExpression reProxy("(?<protocol>http|https|socket)://(?:(?<user>\\w*):(?<password>\\w*)@)?(?<host>[\\w.]+)(:(?<port>\\d+))?");
+            QRegularExpressionMatch matchProxy = reProxy.match(proxyStr);
+            if(matchProxy.hasMatch()){
+                QNetworkProxy proxy;
+                if(matchProxy.captured("protocol") == "socket"){
+                    proxy.setType(QNetworkProxy::Socks5Proxy);
+                }else{
+                    proxy.setType(QNetworkProxy::HttpProxy);
+                }
+                proxy.setHostName(matchProxy.captured("host"));
+                proxy.setPort(matchProxy.captured("port").toInt()==0?80:matchProxy.captured("port").toInt());
+                proxy.setUser(matchProxy.captured("user"));
+                proxy.setPassword(matchProxy.captured("password"));
+
+                seimiPage->setProxy(proxy);
+            }else {
+                qWarning("[seimi] proxy pattern error, proxy = %s",proxyStr.toUtf8().constData());
+            }
+        }
         seimiPage->setScript(jscript);
         seimiPage->setPostParam(postParamJson);
         qInfo("[seimi] TargetUrl:%s ,RenderTime(ms):%d",url.toUtf8().constData(),renderTime);
