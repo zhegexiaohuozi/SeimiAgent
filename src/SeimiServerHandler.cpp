@@ -49,6 +49,35 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     if(path != "/doload"){
         return false;
     }
+    QString url = QUrl::fromPercentEncoding(connection->requestParamValue(urlP).toUtf8());
+    int renderTime = connection->requestParamValue(renderTimeP).toInt();
+    QString proxyStr = connection->requestParamValue(proxyP);
+    QString contentType = connection->requestParamValue(contentTypeP);
+    QString outImgSizeStr = connection->requestParamValue(outImgSizeP);
+    QString ua = connection->requestParamValue(uaP);
+    if(!proxyStr.isEmpty()){
+        QRegularExpression reProxy("(?<protocol>http|https|socket)://(?:(?<user>\\w*):(?<password>\\w*)@)?(?<host>[\\w.]+)(:(?<port>\\d+))?");
+        QRegularExpressionMatch matchProxy = reProxy.match(proxyStr);
+        if(matchProxy.hasMatch()){
+            QNetworkProxy proxy;
+            if(matchProxy.captured("protocol") == "socket"){
+                proxy.setType(QNetworkProxy::Socks5Proxy);
+            }else{
+                proxy.setType(QNetworkProxy::HttpProxy);
+            }
+            proxy.setHostName(matchProxy.captured("host"));
+            proxy.setPort(matchProxy.captured("port").toInt()==0?80:matchProxy.captured("port").toInt());
+            proxy.setUser(matchProxy.captured("user"));
+            proxy.setPassword(matchProxy.captured("password"));
+
+            seimiPage->setProxy(proxy);
+        }else {
+            qWarning("[seimi] proxy pattern error, proxy = %s",proxyStr.toUtf8().constData());
+        }
+    }
+
+    QString jscript = QUrl::fromPercentEncoding(connection->requestParamValue(scriptP).toUtf8());
+    QString postParamJson = connection->requestParamValue(postParamP);
     Pillow::HttpHeaderCollection headers;
     headers << Pillow::HttpHeader("Pragma", "no-cache");
     headers << Pillow::HttpHeader("Expires", "-1");
@@ -56,36 +85,6 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     try{
         QEventLoop eventLoop;
         SeimiPage *seimiPage=new SeimiPage(this);
-        QString url = QUrl::fromPercentEncoding(connection->requestParamValue(urlP).toUtf8());
-        int renderTime = connection->requestParamValue(renderTimeP).toInt();
-        QString proxyStr = connection->requestParamValue(proxyP);
-        QString contentType = connection->requestParamValue(contentTypeP);
-        QString outImgSizeStr = connection->requestParamValue(outImgSizeP);
-        QString ua = connection->requestParamValue(uaP);
-        if(!proxyStr.isEmpty()){
-            QRegularExpression reProxy("(?<protocol>http|https|socket)://(?:(?<user>\\w*):(?<password>\\w*)@)?(?<host>[\\w.]+)(:(?<port>\\d+))?");
-            QRegularExpressionMatch matchProxy = reProxy.match(proxyStr);
-            if(matchProxy.hasMatch()){
-                QNetworkProxy proxy;
-                if(matchProxy.captured("protocol") == "socket"){
-                    proxy.setType(QNetworkProxy::Socks5Proxy);
-                }else{
-                    proxy.setType(QNetworkProxy::HttpProxy);
-                }
-                proxy.setHostName(matchProxy.captured("host"));
-                proxy.setPort(matchProxy.captured("port").toInt()==0?80:matchProxy.captured("port").toInt());
-                proxy.setUser(matchProxy.captured("user"));
-                proxy.setPassword(matchProxy.captured("password"));
-
-                seimiPage->setProxy(proxy);
-            }else {
-                qWarning("[seimi] proxy pattern error, proxy = %s",proxyStr.toUtf8().constData());
-            }
-        }
-
-        QString jscript = QUrl::fromPercentEncoding(connection->requestParamValue(scriptP).toUtf8());
-    //    qDebug()<<"recive js:"<<jscript;
-        QString postParamJson = connection->requestParamValue(postParamP);
         seimiPage->setScript(jscript);
         seimiPage->setPostParam(postParamJson);
         qInfo("[seimi] TargetUrl:%s ,RenderTime(ms):%d",url.toUtf8().constData(),renderTime);
@@ -130,7 +129,7 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     }catch (std::exception& e) {
         headers << Pillow::HttpHeader("Content-Type", "text/html;charset=utf-8");
         QString errMsg = "<html>server error,please try again.</html>";
-        qInfo()<<"errorMsg:"<<QString(QLatin1String(e.what()));
+        qInfo("[seimi error] Page error, url: %s, errorMsg: %s", url.toUtf8().constData(), QString(QLatin1String(e.what())).toUtf8().constData());
         connection->writeResponse(500, headers, errMsg.toUtf8());
     }
     return true;
