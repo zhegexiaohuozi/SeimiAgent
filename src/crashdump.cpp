@@ -58,7 +58,7 @@ print_crash_message()
 {
     fputs("SeimiAgent has crashed.\n"
           "You can go to https://github.com/zhegexiaohuozi/SeimiAgent/issues and report a bug.\n"
-          "Such as your os version,app version,etc.\n",
+          "Such as your os version,app version,current url etc.\n",
           stderr);
     fflush(stderr);
 }
