@@ -54,7 +54,7 @@ QNetworkReply* NetworkAccessManager::createRequest(Operation op, const QNetworkR
 
     RequestTimer* rt = new RequestTimer(reply);
     rt->reply = reply;
-    rt->setInterval(5000);
+    rt->setInterval(20000);
     rt->setSingleShot(true);
     rt->start();
 
@@ -117,7 +117,7 @@ void NetworkAccessManager::resourceTimeout(){
         return;
     }
     // Abort the reply that we attached to the Network Timeout
-    qDebug()<<"Resource request timeout.";
+    qInfo("[seimi] Resource[%s] request timeout.",rt->reply->request().url().toString().toUtf8().constData());
     rt->reply->abort();
 }
 

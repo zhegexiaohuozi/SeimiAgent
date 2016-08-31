@@ -42,6 +42,10 @@ SeimiPage::SeimiPage(QObject *parent) : QObject(parent)
             default_settings->setAttribute(QWebSettings::LocalStorageEnabled,true);
             default_settings->setAttribute(QWebSettings::JavascriptCanAccessClipboard,true);
             default_settings->setAttribute(QWebSettings::DeveloperExtrasEnabled,true);
+            default_settings->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled,true);
+            default_settings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled,true);
+            default_settings->setAttribute(QWebSettings::LocalStorageEnabled,true);
+            default_settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls,true);
 
     _isContentSet = false;
     _isProxyHasBeenSet = false;
