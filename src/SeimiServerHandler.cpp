@@ -121,7 +121,6 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
         }else{
             headers << Pillow::HttpHeader("Content-Type", "text/html;charset=utf-8");
             QString defBody = "<html>null</html>";
-            qInfo()<<"content:"<<seimiPage->getContent();
             connection->writeResponse(200, headers,seimiPage->getContent().isEmpty()?defBody.toUtf8():seimiPage->getContent().toUtf8());
         }
         seimiPage->deleteLater();
@@ -130,6 +129,12 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
         QString errMsg = "<html>server error,please try again.</html>";
         qInfo("[seimi error] Page error, url: %s, errorMsg: %s", url.toUtf8().constData(), QString(QLatin1String(e.what())).toUtf8().constData());
         connection->writeResponse(500, headers, errMsg.toUtf8());
+    }catch (...) {
+        qInfo() << "server error!";
+        headers << Pillow::HttpHeader("Content-Type", "text/html;charset=utf-8");
+        QString errMsg = "<html>server error,please try again.</html>";
+        connection->writeResponse(500, headers, errMsg.toUtf8());
+
     }
     return true;
 }

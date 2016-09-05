@@ -54,7 +54,7 @@ QNetworkReply* NetworkAccessManager::createRequest(Operation op, const QNetworkR
 
     RequestTimer* rt = new RequestTimer(reply);
     rt->reply = reply;
-    rt->setInterval(20000);
+    rt->setInterval(30000);
     rt->setSingleShot(true);
     rt->start();
 

@@ -13,7 +13,7 @@ namespace Pillow
 	class HttpServerPrivate
 	{
 	public:
-		enum { MaximumReserveCount = 25 };
+        enum { MaximumReserveCount = 50 };
 
 	public:
 		QObject* q_ptr;
@@ -62,13 +62,13 @@ namespace Pillow
 HttpServer::HttpServer(QObject *parent)
 : QTcpServer(parent), d_ptr(new HttpServerPrivate(this))
 {
-	setMaxPendingConnections(128);
+    setMaxPendingConnections(512);
 }
 
 HttpServer::HttpServer(const QHostAddress &serverAddress, quint16 serverPort, QObject *parent)
 :	QTcpServer(parent), d_ptr(new HttpServerPrivate(this))
 {
-	setMaxPendingConnections(128);
+    setMaxPendingConnections(512);
 	if (!listen(serverAddress, serverPort))
 		qWarning() << QString("HttpServer::HttpServer: could not bind to %1:%2 for listening: %3").arg(serverAddress.toString()).arg(serverPort).arg(errorString());
 }
@@ -116,14 +116,14 @@ HttpConnection* Pillow::HttpServer::createHttpConnection()
 HttpLocalServer::HttpLocalServer(QObject *parent)
 	: QLocalServer(parent), d_ptr(new HttpServerPrivate(this))
 {
-	setMaxPendingConnections(128);
+    setMaxPendingConnections(512);
 	connect(this, SIGNAL(newConnection()), this, SLOT(this_newConnection()));
 }
 
 HttpLocalServer::HttpLocalServer(const QString& serverName, QObject *parent /*= 0*/)
 	: QLocalServer(parent), d_ptr(new HttpServerPrivate(this))
 {
-	setMaxPendingConnections(128);
+    setMaxPendingConnections(512);
 	connect(this, SIGNAL(newConnection()), this, SLOT(this_newConnection()));
 
 	if (!listen(serverName))
