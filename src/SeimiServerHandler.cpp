@@ -34,7 +34,8 @@ SeimiServerHandler::SeimiServerHandler(QObject *parent):Pillow::HttpHandler(pare
     postParamP("postParam"),
     contentTypeP("contentType"),
     outImgSizeP("outImgSize"),
-    uaP("ua")
+    uaP("ua"),
+    resourceTimeoutP("resourceTimeout")
 {
 
 }
@@ -57,6 +58,7 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     QString ua = connection->requestParamValue(uaP);
     QString jscript = QUrl::fromPercentEncoding(connection->requestParamValue(scriptP).toUtf8());
     QString postParamJson = connection->requestParamValue(postParamP);
+    int resourceTimeout = connection->requestParamValue(resourceTimeoutP).toInt();
     Pillow::HttpHeaderCollection headers;
     headers << Pillow::HttpHeader("Pragma", "no-cache");
     headers << Pillow::HttpHeader("Expires", "-1");
@@ -90,7 +92,7 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
         int useCookieFlag = connection->requestParamValue(useCookieP).toInt();
         seimiPage->setUseCookie(useCookieFlag==1);
         QObject::connect(seimiPage,SIGNAL(loadOver()),&eventLoop,SLOT(quit()));
-        seimiPage->toLoad(url,renderTime,ua);
+        seimiPage->toLoad(url,renderTime,ua,resourceTimeout);
         eventLoop.exec();
 
         if(contentType == "pdf"){

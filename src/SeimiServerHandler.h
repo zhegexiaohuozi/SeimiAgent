@@ -34,6 +34,7 @@ private:
     QString contentTypeP;
     QString outImgSizeP;
     QString uaP;
+    QString resourceTimeoutP;
 };
 
 #endif // SEIMISERVERHANDLER_H

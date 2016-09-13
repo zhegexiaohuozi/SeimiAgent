@@ -26,7 +26,8 @@
 NetworkAccessManager::NetworkAccessManager(QObject *parent)
     : QNetworkAccessManager(parent),
     requestFinishedCount(0), requestFinishedFromCacheCount(0), requestFinishedPipelinedCount(0),
-    requestFinishedSecureCount(0), requestFinishedDownloadBufferCount(0),_ua("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36")
+    requestFinishedSecureCount(0), requestFinishedDownloadBufferCount(0),_ua("Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36"),
+    _resourceTimeout(20000)
 {
     connect(this, SIGNAL(finished(QNetworkReply*)),
             SLOT(requestFinished(QNetworkReply*)));
@@ -54,7 +55,7 @@ QNetworkReply* NetworkAccessManager::createRequest(Operation op, const QNetworkR
 
     RequestTimer* rt = new RequestTimer(reply);
     rt->reply = reply;
-    rt->setInterval(30000);
+    rt->setInterval(_resourceTimeout);
     rt->setSingleShot(true);
     rt->start();
 
@@ -124,5 +125,11 @@ void NetworkAccessManager::resourceTimeout(){
 void NetworkAccessManager::setUserAgent(const QString &ua){
     if(!ua.isEmpty()){
         _ua = ua;
+    }
+}
+
+void NetworkAccessManager::setResourceTimeout(int resourceTimeout){
+    if(resourceTimeout <= 0){
+        _resourceTimeout = resourceTimeout;
     }
 }

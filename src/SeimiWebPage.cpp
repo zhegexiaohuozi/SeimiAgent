@@ -102,19 +102,20 @@ void SeimiPage::processLog(int p){
     qInfo("[seimi] TargetUrl[%s] process:%d%",_url.toUtf8().constData(),p);
 }
 
-void SeimiPage::toLoad(const QString &url,int renderTime,const QString &ua){
+void SeimiPage::toLoad(const QString &url, int renderTime, const QString &ua, int resourceTimeout){
     this->_url = url;
     this->_renderTime = renderTime;
-    NetworkAccessManager *m_networkAccessManager = new NetworkAccessManager(this);
-    m_networkAccessManager->setCurrentUrl(url);
-    m_networkAccessManager->setUserAgent(ua);
+    NetworkAccessManager *networkAccessManager = new NetworkAccessManager(this);
+    networkAccessManager->setCurrentUrl(url);
+    networkAccessManager->setUserAgent(ua);
+    networkAccessManager->setResourceTimeout(resourceTimeout);
     if(isProxySet()){
-        m_networkAccessManager->setProxy(_proxy);
+        networkAccessManager->setProxy(_proxy);
     }
     if(_useCookie){
-        m_networkAccessManager->setCookieJar(new CookieJar());
+        networkAccessManager->setCookieJar(new CookieJar());
     }
-    _sWebPage->setNetworkAccessManager(m_networkAccessManager);
+    _sWebPage->setNetworkAccessManager(networkAccessManager);
     if(_postParamStr.isEmpty()){
         _sWebPage->mainFrame()->load(QUrl(url));
     }else{
