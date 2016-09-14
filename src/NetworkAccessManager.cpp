@@ -129,7 +129,7 @@ void NetworkAccessManager::setUserAgent(const QString &ua){
 }
 
 void NetworkAccessManager::setResourceTimeout(int resourceTimeout){
-    if(resourceTimeout <= 0){
+    if(resourceTimeout > 0){
         _resourceTimeout = resourceTimeout;
     }
 }
