@@ -52,7 +52,10 @@ Determine the output format,you can choose `img` or `pdf`,default is `html`.
 A javascript script which can operate current html document and just seem like in chrome console to execute.
 
 - `ua`
-set your userAgent
+Set your userAgent
+
+- `resourceTimeout`
+Set resource request timeout,such as js resource etc.
 
 # How to build #
 It will take a very long time to build,so it is recommended to use the premade binary file in 'Download'.
