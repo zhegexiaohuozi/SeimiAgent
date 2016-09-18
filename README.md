@@ -55,7 +55,7 @@ A javascript script which can operate current html document and just seem like i
 Set your userAgent
 
 - `resourceTimeout`
-Set resource request timeout,such as js resource etc.
+Set resource request timeout,such as js resource etc.Default resource timeout 20000ms.
 
 # How to build #
 It will take a very long time to build,so it is recommended to use the premade binary file in 'Download'.
