@@ -17,6 +17,7 @@
 #define SEIMIAGENT_H
 #include <QObject>
 #include <cookiejar.h>
+#include "httplistener.h"
 
 class SeimiAgent: public QObject
 {

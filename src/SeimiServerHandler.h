@@ -15,15 +15,20 @@
  */
 #ifndef SEIMISERVERHANDLER_H
 #define SEIMISERVERHANDLER_H
-#include "pillowcore/HttpHandler.h"
-#include "pillowcore/HttpConnection.h"
 #include "SeimiWebPage.h"
+#include "httprequest.h"
+#include "httpresponse.h"
+#include "httprequesthandler.h"
 
-class SeimiServerHandler : public Pillow::HttpHandler
+using namespace stefanfrings;
+
+class SeimiServerHandler : public HttpRequestHandler
 {
+    Q_OBJECT
 public:
     SeimiServerHandler(QObject* parent = 0);
-    bool handleRequest(Pillow::HttpConnection *connection);
+    /** Generates the response */
+    void service(HttpRequest& request, HttpResponse& response);
 private:
     QString renderTimeP;
     QString urlP;

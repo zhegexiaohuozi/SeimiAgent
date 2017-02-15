@@ -21,11 +21,9 @@
 #include <QBuffer>
 #include "SeimiServerHandler.h"
 #include "SeimiWebPage.h"
-#include "pillowcore/HttpServer.h"
-#include "pillowcore/HttpHandler.h"
-#include "pillowcore/HttpConnection.h"
 
-SeimiServerHandler::SeimiServerHandler(QObject *parent):Pillow::HttpHandler(parent),
+
+SeimiServerHandler::SeimiServerHandler(QObject *parent):HttpRequestHandler(parent),
     renderTimeP("renderTime"),
     urlP("url"),
     proxyP("proxy"),
@@ -40,29 +38,29 @@ SeimiServerHandler::SeimiServerHandler(QObject *parent):Pillow::HttpHandler(pare
 
 }
 
-bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
-    QString method = connection->requestMethod();
-    QString path = connection->requestPath();
+void SeimiServerHandler::service(HttpRequest& request, HttpResponse& response){
+    QByteArray method = request.getMethod();
+    QByteArray path = request.getPath();
     if(method == "GET"){
-        connection->writeResponse(405, Pillow::HttpHeaderCollection(),"Method 'GET' is not supprot,please use 'POST'");
-        return true;
+        response.setStatus(405,"Method 'GET' is not supprot,please use 'POST'");
+        response.write("Method 'GET' is not supprot,please use 'POST'");
+        return;
     }
     if(path != "/doload"){
-        return false;
+        return;
     }
-    QString url = QUrl::fromPercentEncoding(connection->requestParamValue(urlP).toUtf8());
-    int renderTime = connection->requestParamValue(renderTimeP).toInt();
-    QString proxyStr = connection->requestParamValue(proxyP);
-    QString contentType = connection->requestParamValue(contentTypeP);
-    QString outImgSizeStr = connection->requestParamValue(outImgSizeP);
-    QString ua = connection->requestParamValue(uaP);
-    QString jscript = QUrl::fromPercentEncoding(connection->requestParamValue(scriptP).toUtf8());
-    QString postParamJson = connection->requestParamValue(postParamP);
-    int resourceTimeout = connection->requestParamValue(resourceTimeoutP).toInt();
-    Pillow::HttpHeaderCollection headers;
-    headers << Pillow::HttpHeader("Pragma", "no-cache");
-    headers << Pillow::HttpHeader("Expires", "-1");
-    headers << Pillow::HttpHeader("Cache-Control", "no-cache");
+    QString url = request.getParameter(urlP.toUtf8());
+    int renderTime = request.getParameter(renderTimeP.toUtf8()).toInt();
+    QString proxyStr = request.getParameter(proxyP.toUtf8());
+    QString contentType = request.getParameter(contentTypeP.toUtf8());
+    QString outImgSizeStr = request.getParameter(outImgSizeP.toUtf8());
+    QString ua = request.getParameter(uaP.toUtf8());
+    QString jscript = request.getParameter(scriptP.toUtf8());
+    QString postParamJson = request.getParameter(postParamP.toUtf8());
+    int resourceTimeout = request.getParameter(resourceTimeoutP.toUtf8()).toInt();
+    response.setHeader("Pragma", "no-cache");
+    response.setHeader("Expires", "-1");
+    response.setHeader("Cache-Control", "no-cache");
     try{
         QEventLoop eventLoop;
         SeimiPage *seimiPage=new SeimiPage(this);
@@ -89,22 +87,22 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
         seimiPage->setScript(jscript);
         seimiPage->setPostParam(postParamJson);
         qInfo("[seimi] TargetUrl:%s ,RenderTime(ms):%d",url.toUtf8().constData(),renderTime);
-        int useCookieFlag = connection->requestParamValue(useCookieP).toInt();
+        int useCookieFlag = request.getParameter(useCookieP.toUtf8()).toInt();
         seimiPage->setUseCookie(useCookieFlag==1);
         QObject::connect(seimiPage,SIGNAL(loadOver()),&eventLoop,SLOT(quit()));
         seimiPage->toLoad(url,renderTime,ua,resourceTimeout);
         eventLoop.exec();
 
         if(contentType == "pdf"){
-            headers << Pillow::HttpHeader("Content-Type", "application/pdf");
+            response.setHeader("Content-Type", "application/pdf");
             QByteArray pdfContent = seimiPage->generatePdf();
             QCryptographicHash md5sum(QCryptographicHash::Md5);
             md5sum.addData(pdfContent);
             QByteArray etag = md5sum.result().toHex();
-            headers << Pillow::HttpHeader("ETag", etag);
-            connection->writeResponse(200,headers,pdfContent);
+            response.setHeader("ETag", etag);
+            response.write(pdfContent);
         }else if(contentType == "img"){
-            headers << Pillow::HttpHeader("Content-Type", "image/png");
+            response.setHeader("Content-Type", "image/png");
             QSize targetSize;
             if(!outImgSizeStr.isEmpty()){
                 QRegularExpression reImgSize("(?<xSize>\\d+)(?:x|X)(?<ySize>\\d+)");
@@ -118,26 +116,26 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
             QCryptographicHash md5sum(QCryptographicHash::Md5);
             md5sum.addData(imgContent);
             QByteArray etag = md5sum.result().toHex();
-            headers << Pillow::HttpHeader("ETag", etag);
-            connection->writeResponse(200,headers,imgContent);
+            response.setHeader("ETag", etag);
+            response.write(imgContent);
         }else{
-            headers << Pillow::HttpHeader("Content-Type", "text/html;charset=utf-8");
+            response.setHeader("Content-Type", "text/html;charset=utf-8");
             QString defBody = "<html>null</html>";
-            connection->writeResponse(200, headers,seimiPage->getContent().isEmpty()?defBody.toUtf8():seimiPage->getContent().toUtf8());
+            response.write(seimiPage->getContent().isEmpty()?defBody.toUtf8():seimiPage->getContent().toUtf8());
         }
         seimiPage->deleteLater();
     }catch (std::exception& e) {
-        headers << Pillow::HttpHeader("Content-Type", "text/html;charset=utf-8");
+        response.setHeader("Content-Type", "text/html;charset=utf-8");
         QString errMsg = "<html>server error,please try again.</html>";
         qInfo("[seimi error] Page error, url: %s, errorMsg: %s", url.toUtf8().constData(), QString(QLatin1String(e.what())).toUtf8().constData());
-        connection->writeResponse(500, headers, errMsg.toUtf8());
+        response.setStatus(500,"server error");
+        response.write(errMsg.toUtf8());
     }catch (...) {
         qInfo() << "server error!";
-        headers << Pillow::HttpHeader("Content-Type", "text/html;charset=utf-8");
+        response.setHeader("Content-Type", "text/html;charset=utf-8");
         QString errMsg = "<html>server error,please try again.</html>";
-        connection->writeResponse(500, headers, errMsg.toUtf8());
-
+        response.setStatus(500,"server error");
+        response.write(errMsg.toUtf8());
     }
-    return true;
 }
 

@@ -20,4 +20,4 @@ HEADERS += \
     SeimiAgent.h \
     crashdump.h
 
-include(pillowcore/pillowcore.pri)
+include(httpserver/httpserver.pri)

@@ -15,12 +15,11 @@
  */
 #include <QApplication>
 #include <QCommandLineParser>
-#include "pillowcore/HttpServer.h"
-#include "pillowcore/HttpHandler.h"
-#include "pillowcore/HttpConnection.h"
 #include "SeimiAgent.h"
 #include "SeimiWebPage.h"
 #include "SeimiServerHandler.h"
+
+using namespace stefanfrings;
 
 static SeimiAgent* seimiAgentInstance = NULL;
 
@@ -55,15 +54,17 @@ int SeimiAgent::run(int argc, char *argv[]){
     if (portN == 0){
         portN = 8000;
     }
-    Pillow::HttpServer server(QHostAddress("0.0.0.0"), portN);
-    if (!server.isListening())
-        exit(1);
+    QSettings* settings = new QSettings("seimiagent.org","SeimiAgent");
+    settings->setValue("port",portN);
+    settings->setValue("minThreads",5);
+    settings->setValue("maxThreads",100);
+    settings->setValue("cleanupInterval",60000);
+    settings->setValue("readTimeout",60000);
+    settings->setValue("maxRequestSize",10240000);
+    settings->setValue("maxMultiPartSize",10000000);
+
     qInfo() << "[seimi] SeimiAgent started,listening on :"<<portN;
     QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
-    Pillow::HttpHandler* handler = new Pillow::HttpHandlerStack(&server);
-        new Pillow::HttpHandlerLog(handler);
-        new SeimiServerHandler(handler);
-        new Pillow::HttpHandler404(handler);
-    QObject::connect(&server, SIGNAL(requestReady(Pillow::HttpConnection*)), handler, SLOT(handleRequest(Pillow::HttpConnection*)));
+    new HttpListener(settings,new SeimiServerHandler(&a),&a);
     return a.exec();
 }
