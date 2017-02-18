@@ -63,7 +63,7 @@ void SeimiServerHandler::service(HttpRequest& request, HttpResponse& response){
     response.setHeader("Cache-Control", "no-cache");
     try{
         QEventLoop eventLoop;
-        SeimiPage *seimiPage=new SeimiPage(this);
+        SeimiPage *seimiPage=new SeimiPage();
         if(!proxyStr.isEmpty()){
             QRegularExpression reProxy("(?<protocol>http|https|socket)://(?:(?<user>\\w*):(?<password>\\w*)@)?(?<host>[\\w.]+)(:(?<port>\\d+))?");
             QRegularExpressionMatch matchProxy = reProxy.match(proxyStr);

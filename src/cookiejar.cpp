@@ -47,6 +47,7 @@
 #include <QStandardPaths>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QDebug>
 
 #define COOKIE_JAR_VERSION      1
 

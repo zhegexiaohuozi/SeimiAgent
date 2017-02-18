@@ -63,7 +63,7 @@ int SeimiAgent::run(int argc, char *argv[]){
     settings->setValue("maxRequestSize",10240000);
     settings->setValue("maxMultiPartSize",10000000);
 
-    qInfo() << "[seimi] SeimiAgent started,listening on :"<<portN;
+    qInfo() << "[seimi] SeimiAgent started";
     QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
     new HttpListener(settings,new SeimiServerHandler(&a),&a);
     return a.exec();

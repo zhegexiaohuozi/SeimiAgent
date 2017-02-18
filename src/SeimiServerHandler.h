@@ -25,6 +25,7 @@ using namespace stefanfrings;
 class SeimiServerHandler : public HttpRequestHandler
 {
     Q_OBJECT
+    Q_DISABLE_COPY(SeimiServerHandler)
 public:
     SeimiServerHandler(QObject* parent = 0);
     /** Generates the response */
