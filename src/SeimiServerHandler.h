@@ -26,6 +26,8 @@ class SeimiServerHandler : public HttpRequestHandler
 {
     Q_OBJECT
     Q_DISABLE_COPY(SeimiServerHandler)
+signals:
+    void reciveReq(HttpRequest& request, HttpResponse& response);
 public:
     SeimiServerHandler(QObject* parent = 0);
     /** Generates the response */

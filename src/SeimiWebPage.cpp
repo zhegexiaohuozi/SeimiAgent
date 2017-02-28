@@ -35,17 +35,18 @@ SeimiPage::SeimiPage(QObject *parent) : QObject(parent)
 {
     _sWebPage = new QWebPage(this);
     QWebSettings* default_settings = _sWebPage->settings();
-            default_settings->setAttribute(QWebSettings::JavascriptEnabled,true);
-            default_settings->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled,true);
-            default_settings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled,true);
-            default_settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls,true);
-            default_settings->setAttribute(QWebSettings::LocalStorageEnabled,true);
-            default_settings->setAttribute(QWebSettings::JavascriptCanAccessClipboard,true);
-            default_settings->setAttribute(QWebSettings::DeveloperExtrasEnabled,true);
-            default_settings->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled,true);
-            default_settings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled,true);
-            default_settings->setAttribute(QWebSettings::LocalStorageEnabled,true);
-            default_settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls,true);
+    default_settings->setAttribute(QWebSettings::JavascriptEnabled,true);
+    default_settings->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled,true);
+    default_settings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled,true);
+    default_settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls,true);
+    default_settings->setAttribute(QWebSettings::LocalStorageEnabled,true);
+    default_settings->setAttribute(QWebSettings::JavascriptCanAccessClipboard,true);
+    default_settings->setAttribute(QWebSettings::DeveloperExtrasEnabled,true);
+    default_settings->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled,true);
+    default_settings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled,true);
+    default_settings->setAttribute(QWebSettings::LocalStorageEnabled,true);
+    default_settings->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls,true);
+    default_settings->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 
     _isContentSet = false;
     _isProxyHasBeenSet = false;

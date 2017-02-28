@@ -16,17 +16,29 @@
 #ifndef SEIMIAGENT_H
 #define SEIMIAGENT_H
 #include <QObject>
+#include <QEventLoop>
+#include <QNetworkProxy>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include <QBuffer>
 #include <cookiejar.h>
 #include "httplistener.h"
+#include "httprequest.h"
+#include "httpresponse.h"
+
+using namespace stefanfrings;
 
 class SeimiAgent: public QObject
 {
     Q_OBJECT
 private:
-    SeimiAgent(QObject *parent = 0);
+    SeimiAgent(QObject *parent = 0);    
+public slots:
+    void requestProcess(HttpRequest& request, HttpResponse& response);
 public:
     static SeimiAgent* instance();
     int run(int argc, char *argv[]);
+
 
 };
 
