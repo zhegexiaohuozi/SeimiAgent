@@ -14,6 +14,7 @@
 #include <QSettings>
 #include <QTemporaryFile>
 #include <QUuid>
+#include <QMetaType>
 #include "httpglobal.h"
 
 namespace stefanfrings {
@@ -233,6 +234,7 @@ private:
     QByteArray lineBuffer;
 
 };
+
 
 } // end of namespace
 

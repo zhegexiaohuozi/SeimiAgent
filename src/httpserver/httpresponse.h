@@ -9,6 +9,7 @@
 #include <QMap>
 #include <QString>
 #include <QTcpSocket>
+#include <QMetaType>
 #include "httpglobal.h"
 #include "httpcookie.h"
 
