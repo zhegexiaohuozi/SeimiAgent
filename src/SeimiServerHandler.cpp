@@ -50,13 +50,15 @@ bool SeimiServerHandler::handleRequest(Pillow::HttpConnection *connection){
     if(path != "/doload"){
         return false;
     }
-    QString url = QUrl::fromPercentEncoding(connection->requestParamValue(urlP).toUtf8());
+//    QString url = QUrl::fromPercentEncoding(connection->requestParamValue(urlP).toUtf8());
+    QString url = connection->requestParamValue(urlP);
     int renderTime = connection->requestParamValue(renderTimeP).toInt();
     QString proxyStr = connection->requestParamValue(proxyP);
     QString contentType = connection->requestParamValue(contentTypeP);
     QString outImgSizeStr = connection->requestParamValue(outImgSizeP);
     QString ua = connection->requestParamValue(uaP);
-    QString jscript = QUrl::fromPercentEncoding(connection->requestParamValue(scriptP).toUtf8());
+//    QString jscript = QUrl::fromPercentEncoding(connection->requestParamValue(scriptP).toUtf8());
+    QString jscript = connection->requestParamValue(scriptP);
     QString postParamJson = connection->requestParamValue(postParamP);
     int resourceTimeout = connection->requestParamValue(resourceTimeoutP).toInt();
     Pillow::HttpHeaderCollection headers;
