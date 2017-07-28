@@ -39,7 +39,8 @@ SeimiAgent* SeimiAgent::instance(){
 
 int SeimiAgent::run(int argc, char *argv[]){
     QApplication a(argc, argv);
-    a.setApplicationVersion("1.3.1");
+    QString version = "1.3.2";
+    a.setApplicationVersion(version);
     a.setApplicationName("SeimiAgent");
     a.setApplicationDisplayName("A headless,standalone webkit server which make grabing dynamic web page easier.");
     QCommandLineParser parser;
@@ -58,6 +59,7 @@ int SeimiAgent::run(int argc, char *argv[]){
     Pillow::HttpServer server(QHostAddress("0.0.0.0"), portN);
     if (!server.isListening())
         exit(1);
+    qInfo().noquote() << "[seimi] Current version :"<< version;
     qInfo() << "[seimi] SeimiAgent started,listening on :"<<portN;
     QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
     Pillow::HttpHandler* handler = new Pillow::HttpHandlerStack(&server);
