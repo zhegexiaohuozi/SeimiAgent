@@ -60,7 +60,7 @@ Set resource request timeout,such as js resource etc.Default resource timeout 20
 # How to build #
 It will take a very long time to build,so it is recommended to use the premade binary file in 'Download'.
 
-##Requirements##
+## Requirements ##
 - on ubuntu
 ```
 sudo apt-get install build-essential g++ flex bison gperf ruby perl libsqlite3-dev libfontconfig1-dev libicu-dev libfreetype6 libssl-dev libpng-dev libjpeg-dev python libx11-dev libxext-dev
